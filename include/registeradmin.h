@@ -24,7 +24,7 @@ struct stat st = {0};
 
 int registeradmin()
 {
-    if (stat("/some/directory", &st) == -1)
+    if (stat("files", &st) == -1)
     {
         mkdir("files", 0700);
     }
