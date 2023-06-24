@@ -44,9 +44,8 @@ int registeradmin()
     {
         if (stat(".files", &st) == -1)
         {
-//        mkdir("files", 0700);
+            system("mkdir .files");
         }
-        system("mv files .files");
         FILE *fp;
         fp = fopen(".files/adminlist", "a");
         if (fopen(".files/adminlist", "r") == NULL)

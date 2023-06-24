@@ -38,49 +38,49 @@ void on_login_clicked_admin(GtkWidget *button, gpointer user_data)
 int loginCheckAdmin()
 {
     char usrnm[20], pass[20];
-    FILE *chk;
-    if(osname == 3 || osname == 1)
+    FILE *chk = fopen(".files/userlist", "r");
+
+    if (chk != NULL)
     {
-        chk = fopen(".files/userlist","r");
-        while (fscanf(chk, "%s %s ", usrnm, pass) == 2)
-    {
-        if (strcmp(entered_username, usrnm) == 0)
+        if (osname == 3 || osname == 1)
         {
-            return 2;
+            while (fscanf(chk, "%s %s ", usrnm, pass) == 2)
+            {
+                if (strcmp(entered_username, usrnm) == 0)
+                {
+                    fclose(chk);
+                    return 2;
+                }
+            }
         }
+        fclose(chk);
     }
-    }
-    fclose(chk);
-    FILE *fp;
-    if(osname == 3 || osname == 1)
-    {
-    fp = fopen(".files/adminlist", "r");
-    if (fopen(".files/adminlist", "r") == NULL)
+
+    FILE *fp = fopen(".files/adminlist", "r");
+    if (fp == NULL)
     {
         return 99;
     }
-    while (fscanf(fp, "%s %s ", usrnm, pass) == 2)
+
+    if (osname == 3 || osname == 1)
     {
-        if (strcmp(entered_username, usrnm) == 0)
+        while (fscanf(fp, "%s %s ", usrnm, pass) == 2)
         {
-            break;
+            if (strcmp(entered_username, usrnm) == 0)
+            {
+                fclose(fp);
+                if (strcmp(entered_password, pass) == 0)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
     }
+
     fclose(fp);
-    }
-    if (strcmp(entered_username, usrnm) == 0)
-    {
-        if (strcmp(entered_password, pass) == 0)
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    else
-    {
-        return -1;
-    }
+    return -1;
 }
