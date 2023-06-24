@@ -34,7 +34,7 @@ int loginCheckAdmin()
 {
     char usrnm[20], pass[20];
     FILE *fp;
-    if(osname == 3)
+    if(osname == 3 || osname == 1)
     {
     fp = fopen(".files/adminlist", "r");
     if (fopen(".files/adminlist", "r") == NULL)

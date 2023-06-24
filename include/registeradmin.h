@@ -24,12 +24,16 @@ struct stat st = {0};
 
 int registeradmin()
 {
-    if (stat("files", &st) == -1)
+    if (stat("/some/directory", &st) == -1)
     {
         mkdir("files", 0700);
     }
     if (osname == 3)
     {
+        if (stat(".files", &st) == -1)
+        {
+            system("mkdir files");
+        }
         system("mv files .files");
         FILE *fp;
         fp = fopen(".files/adminlist", "a");
