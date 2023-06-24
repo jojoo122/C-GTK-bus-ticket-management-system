@@ -1,14 +1,13 @@
 void landing()
 {
-    if(cfp==1){
-    clearmywindow();}
+    clearmywindow();
     //declaring widgets
     GtkWidget *button;
     GtkWidget *button1;
 
     //create the window & close the window
-    window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect(GTK_WINDOW(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_window_fullscreen(GTK_WINDOW(window));
 
     //create a fixed coordinate component
     fixed = gtk_fixed_new();
@@ -31,7 +30,7 @@ void landing()
 
     GtkWidget *exit = gtk_button_new_with_label("EXIT");
     g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),exit,width-90,10);
+    gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
 
     //fixing the buttons and texts position
     gtk_fixed_put(GTK_FIXED(fixed), button, (width - 200) / 2, (height - 50) / 2);

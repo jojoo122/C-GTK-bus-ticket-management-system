@@ -16,14 +16,19 @@ void on_login_clicked_admin(GtkWidget *button, gpointer user_data)
     if (result == 1)
     {
         gtk_label_set_text(GTK_LABEL(loginfailed), "SUCCESSFULLY LOGGED IN!");
+        adminpannel();
     }
     else if (result == 0)
     {
-        gtk_label_set_text(GTK_LABEL(loginfailed), "INCORRECT PASSWORD");
+        gtk_label_set_text(GTK_LABEL(loginfailed), "INCORRECT PASSWORD!");
     }
     else if (result == -1)
     {
-        gtk_label_set_text(GTK_LABEL(loginfailed), "USER NOT FOUND");
+        gtk_label_set_text(GTK_LABEL(loginfailed), "USER NOT FOUND!");
+    }
+    else if (result == 2)
+    {
+        gtk_label_set_text(GTK_LABEL(loginfailed), "WRONG LOGIN PANNEL!");
     }
     else
     {
@@ -33,6 +38,19 @@ void on_login_clicked_admin(GtkWidget *button, gpointer user_data)
 int loginCheckAdmin()
 {
     char usrnm[20], pass[20];
+    FILE *chk;
+    if(osname == 3 || osname == 1)
+    {
+        chk = fopen(".files/userlist","r");
+        while (fscanf(chk, "%s %s ", usrnm, pass) == 2)
+    {
+        if (strcmp(entered_username, usrnm) == 0)
+        {
+            return 2;
+        }
+    }
+    }
+    fclose(chk);
     FILE *fp;
     if(osname == 3 || osname == 1)
     {

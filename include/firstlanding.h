@@ -1,6 +1,5 @@
 void firstlanding()
 {
-    cfp = 1;
     // fixed container and force full screen
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     g_signal_connect(GTK_WINDOW(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);

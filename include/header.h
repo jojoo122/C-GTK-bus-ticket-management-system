@@ -3,7 +3,9 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-int cfp = 0;
+void userpannel();
+
+void adminpannel();
 
 int loginCheckAdmin();
 
@@ -17,8 +19,7 @@ void landing();
 
 int loginCheckUser();
 
-int width = 1366;
-int height = 768;
+int width = 1366, height = 768;
 
 char entered_username[20], entered_password[20];
 

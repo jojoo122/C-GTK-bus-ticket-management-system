@@ -13,14 +13,19 @@ void on_login_clicked_user(GtkWidget *button, gpointer user_data)
     if (result == 1)
     {
         gtk_label_set_text(GTK_LABEL(loginfailed), "SUCCESSFULLY LOGGED IN!");
+        userpannel();
     }
-    else if(result == 0)
+    else if (result == 0)
     {
-        gtk_label_set_text(GTK_LABEL(loginfailed), "INCORRECT PASSWORD");
+        gtk_label_set_text(GTK_LABEL(loginfailed), "INCORRECT PASSWORD!");
     }
-    else if(result == -1)
+    else if (result == -1)
     {
-        gtk_label_set_text(GTK_LABEL(loginfailed), "USER NOT FOUND");
+        gtk_label_set_text(GTK_LABEL(loginfailed), "USER NOT FOUND!");
+    }
+    else if (result == 2)
+    {
+        gtk_label_set_text(GTK_LABEL(loginfailed), "WRONG LOGIN PANNEL!");
     }
     else
     {
@@ -29,24 +34,40 @@ void on_login_clicked_user(GtkWidget *button, gpointer user_data)
 }
 int loginCheckUser()
 {
-    char usrnm[20],pass[20];
-    FILE *fp;
-    fp = fopen("files/userlist","r");
-    if(fopen("files/userlist","r") == NULL)
+    char usrnm[20], pass[20];
+    FILE *chk;
+    if (osname == 3 || osname == 1)
     {
-        return 99;
-    }
-    while(fscanf(fp,"%s %s ",usrnm,pass)==2)
-    {
-        if(strcmp(entered_username,usrnm) == 0)
+        chk = fopen(".files/adminlist", "r");
+        while (fscanf(chk, "%s %s ", usrnm, pass) == 2)
         {
-            break;
+            if (strcmp(entered_username, usrnm) == 0)
+            {
+                return 2;
+            }
         }
     }
-    fclose(fp);
-    if (strcmp(entered_username,usrnm)==0)
+    fclose(chk);
+    FILE *fp;
+    if (osname == 3 || osname == 1)
     {
-        if (strcmp(entered_password, pass)==0)
+        fp = fopen(".files/userlist", "r");
+        if (fopen(".files/userlist", "r") == NULL)
+        {
+            return 99;
+        }
+        while (fscanf(fp, "%s %s ", usrnm, pass) == 2)
+        {
+            if (strcmp(entered_username, usrnm) == 0)
+            {
+                break;
+            }
+        }
+        fclose(fp);
+    }
+    if (strcmp(entered_username, usrnm) == 0)
+    {
+        if (strcmp(entered_password, pass) == 0)
         {
             return 1;
         }
