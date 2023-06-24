@@ -19,4 +19,4 @@ testrm:
 	rm test && clear
 
 push:
-	git add . && git commit -m "BTMS" && git pull origin main && git push -u origin main
+	clear && git add . && git commit -m "BTMS" && git pull origin main && git push -u origin main && clear
