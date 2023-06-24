@@ -10,7 +10,8 @@ int main(int argc, char **argv)
 {
     oslist();
     gtk_init(&argc, &argv);
-    if(osname == 3)
+    g_object_set (gtk_settings_get_default (), "gtk-application-prefer-dark-theme", TRUE, NULL);
+    if(osname == 3 || osname == 1)
     {
     if (fopen(".files/adminlist", "r") == NULL)
     {

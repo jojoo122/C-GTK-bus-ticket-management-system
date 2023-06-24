@@ -24,12 +24,28 @@ struct stat st = {0};
 
 int registeradmin()
 {
-    if (stat("/some/directory", &st) == -1)
+    if (osname == 1)
     {
-        mkdir("files", 0700);
+        if (stat("/some/directory", &st) == -1)
+        {
+            system("mkdir .files");
+        }
+        system("attrib +h .files");
+        FILE *fp;
+        fp = fopen(".files/adminlist", "a");
+        if (fopen(".files/adminlist", "r") == NULL)
+        {
+            return 0;
+        }
+        fprintf(fp, "%s %s ", entered_username, entered_password);
+        fclose(fp);
     }
     if (osname == 3)
     {
+        if (stat(".files", &st) == -1)
+        {
+            system("mkdir files");
+        }
         system("mv files .files");
         FILE *fp;
         fp = fopen(".files/adminlist", "a");
