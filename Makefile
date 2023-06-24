@@ -17,3 +17,6 @@ test:
 
 testrm:
 	rm test && clear
+
+push:
+	git add . && git commit -m "BTMS" && git push -u origin main
