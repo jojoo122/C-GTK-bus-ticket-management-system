@@ -19,6 +19,10 @@ void landing();
 
 int loginCheckUser();
 
+void registerUser();
+
+void removeUser();
+
 int width = 1366, height = 768;
 
 char entered_username[20], entered_password[20];

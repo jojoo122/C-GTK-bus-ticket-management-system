@@ -4,7 +4,7 @@ void userpannel()
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
     
-    GtkWidget *goback = gtk_button_new_with_label("GO BACK");
+    GtkWidget *goback = gtk_button_new_with_label("LOG OUT");
     g_signal_connect(goback,"clicked",G_CALLBACK(landing),NULL);
     gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
 

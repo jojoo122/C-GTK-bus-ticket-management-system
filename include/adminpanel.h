@@ -4,7 +4,7 @@ void adminpannel()
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
     
-    GtkWidget *goback = gtk_button_new_with_label("GO BACK");
+    GtkWidget *goback = gtk_button_new_with_label("LOG OUT");
     g_signal_connect(goback,"clicked",G_CALLBACK(landing),NULL);
     gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
 
@@ -44,12 +44,12 @@ void adminpannel()
 
     GtkWidget *adduser = gtk_button_new_with_label("ADD A NEW USER");
     gtk_widget_set_size_request(adduser, 400, 50);
-    // g_signal_connect(adduser, "clicked", G_CALLBACK(addUser), NULL);
+    g_signal_connect(adduser, "clicked", G_CALLBACK(registerUser), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),adduser,(width-400)/2-250,(height/2)+100);
 
     GtkWidget *removeuser = gtk_button_new_with_label("REMOVE A USER");
     gtk_widget_set_size_request(removeuser, 400, 50);
-    // g_signal_connect(removeuser, "clicked", G_CALLBACK(removeUser), NULL);
+    g_signal_connect(removeuser, "clicked", G_CALLBACK(removeUser), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),removeuser,(width-400)/2-250,(height/2)+200);
 
     GtkWidget *listusers = gtk_button_new_with_label("LIST ALL THE USERS");
