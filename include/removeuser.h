@@ -49,7 +49,7 @@ void removeUser()
     gtk_style_context_add_provider(styleContext1, GTK_STYLE_PROVIDER(cssProvider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     gtk_widget_set_halign(request1, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(request1, GTK_ALIGN_CENTER);
-    gtk_fixed_put(GTK_FIXED(fixed), request1, (width - 400) / 2, 200);
+    gtk_fixed_put(GTK_FIXED(fixed), request1, (width - 500) / 2, 200);
 
     gtk_widget_show_all(window);
 }
@@ -70,6 +70,10 @@ void user_unregister(GtkWidget *button, gpointer user_data)
     else if(userunregister() == 2)
     {
         gtk_label_set_text(GTK_LABEL(unregistrationsuccess), "YOU CAN ONLY REMOVE USERS!");
+    }
+    else if(userunregister() == 3)
+    {
+        gtk_label_set_text(GTK_LABEL(unregistrationsuccess), "USER NOT FOUND!");
     }
     else
     {
@@ -94,12 +98,23 @@ int userunregister()
         fclose(fp3);
         FILE *fp, *fp2;
         fp = fopen(".files/userlist", "r");
-        fp2 = fopen(".files/temp", "a");
         if (fopen(".files/userlist", "r") == NULL)
         {
             return 0;
         }
-        while (fscanf(fp, "%s %s ", usrnm, pass) == 2)
+        while(fscanf(fp,"%s %s",usrnm,pass) == 2)
+        {
+            if (strcmp(usrnm, entered_username) == 0)
+            {
+                break;
+            }
+        }
+        if (strcmp(usrnm, entered_username) != 0)
+        {
+            return 3;
+        }
+        fp2 = fopen(".files/temp", "a");
+        while (fscanf(fp, "%s %s", usrnm, pass) == 2)
         {
             if (strcmp(usrnm, entered_username) != 0)
             {
