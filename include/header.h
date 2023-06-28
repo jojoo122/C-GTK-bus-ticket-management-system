@@ -11,6 +11,8 @@ int loginCheckAdmin();
 
 void clicked();
 
+void listUsers();
+
 void firstlanding();
 
 int registeradmin();

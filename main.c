@@ -9,6 +9,7 @@
 #include "include/userpanel.h"
 #include "include/registeruser.h"
 #include "include/removeuser.h"
+#include "include/listusers.h"
 #include "include/landing.h"
 int main(int argc, char **argv)
 {

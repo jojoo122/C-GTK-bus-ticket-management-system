@@ -41,7 +41,7 @@ void adminpannel()
 
     GtkWidget *listusers = gtk_button_new_with_label("LIST ALL THE USERS");
     gtk_widget_set_size_request(listusers, 400, 50);
-    // g_signal_connect(listusers, "clicked", G_CALLBACK(listUsers), NULL);
+    g_signal_connect(listusers, "clicked", G_CALLBACK(listUsers), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),listusers,(width-400)/2+250,(height/2)-100);
 
     GtkWidget *bookedticketdetails = gtk_button_new_with_label("LIST BOOKED TICKET DETAILS");
