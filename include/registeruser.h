@@ -34,21 +34,14 @@ void registerUser()
     g_signal_connect(login_button, "clicked", G_CALLBACK(user_register), NULL);
 
     GtkWidget *goback = gtk_button_new_with_label("GO BACK");
-    g_signal_connect(goback,"clicked",G_CALLBACK(adminpannel),NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
+    g_signal_connect(goback, "clicked", G_CALLBACK(adminpannel), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), goback, 5, 5);
     GtkWidget *exit = gtk_button_new_with_label("EXIT");
-    g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
+    g_signal_connect(exit, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), exit, width - 70, 5);
 
     // header and footer text
-    GtkWidget *welcometext = gtk_label_new("WELCOME TO TIGER'S BUS TICKET MANAGEMENT SYSTEM!");
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 26pt; }", -1, NULL);
-    GtkStyleContext *styleContext = gtk_widget_get_style_context(welcometext);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    GtkWidget *footer = gtk_label_new("DESIGNED AND CODED BY AADARSHA KHANAL, BIGYAN POKHREL & NISHANT SUBEDI");
-    gtk_fixed_put(GTK_FIXED(fixed), welcometext, 155, 1);
-    gtk_fixed_put(GTK_FIXED(fixed), footer, (width - 550) / 2, height - 45);
+    showHF();
 
     GtkWidget *request1 = gtk_label_new("PLEASE ENTER THE NEW USER INFO");
     GtkCssProvider *cssProvider1 = gtk_css_provider_new();
@@ -73,57 +66,70 @@ void user_register(GtkWidget *button, gpointer user_data)
     const gchar *password = gtk_entry_get_text(GTK_ENTRY(password_entry));
     strcpy(entered_username, username);
     strcpy(entered_password, password);
-    if (userregister() == 1)
+    if (strcmp(entered_password, "") == 0)
     {
-        gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
-        adminpannel();
-    }
-    else if(userregister() == -1)
-    {
-        gtk_label_set_text(GTK_LABEL(registrationsuccess), "USER ALREADY EXISTS!");
+        gtk_label_set_text(GTK_LABEL(registrationsuccess), "PLEASE ENTER PASSWORD!");
     }
     else
     {
-        gtk_label_set_text(GTK_LABEL(registrationsuccess),"UNKNWON ERROR!");
+        if (userregister() == 1)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
+            adminpannel();
+        }
+        else if (userregister() == -1)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "USER ALREADY EXISTS!");
+        }
+        else
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "UNKNWON ERROR!");
+        }
     }
 }
-
 int userregister()
 {
     if (osname == 1 || osname == 3)
     {
-        char usrnm[20],pass[20];
-        FILE *fp2,*fp3,*fp;
-        fp2 = fopen(".files/userlist","r");
-        fp3 = fopen(".files/adminlist","r");
-        if(fp2 == NULL)
+        char usrnm[20], pass[20];
+        FILE *fp2, *fp3, *fp;
+        fp2 = fopen(".files/userlist", "r");
+        fp3 = fopen(".files/adminlist", "r");
+        if (fp2 == NULL)
         {
             goto label;
         }
-        while(fscanf(fp2,"%s %s",usrnm,pass) == 2)
+        while (fscanf(fp2, "%s %s", usrnm, pass) == 2)
         {
-            if(strcmp(usrnm,entered_username) == 0)
+            if (strcmp(usrnm, entered_username) == 0)
             {
                 return -1;
             }
         }
-        while(fscanf(fp3,"%s %s",usrnm,pass) == 2)
+        while (fscanf(fp3, "%s %s", usrnm, pass) == 2)
         {
-            if(strcmp(usrnm,entered_username) == 0)
+            if (strcmp(usrnm, entered_username) == 0)
             {
                 return -1;
             }
         }
         fclose(fp2);
-        fclose(fp3);
-        label:
+    label:
         fp = fopen(".files/userlist", "a");
+        while (fscanf(fp3, "%s %s", usrnm, pass) == 2)
+        {
+            if (strcmp(usrnm, entered_username) == 0)
+            {
+                return -1;
+            }
+        }
         if (fopen(".files/userlist", "r") == NULL)
         {
             return 0;
         }
         fprintf(fp, "%s %s ", entered_username, entered_password);
         fclose(fp);
+        fclose(fp3);
     }
     return 1;
 }

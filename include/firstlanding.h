@@ -23,7 +23,7 @@ void firstlanding()
     gtk_fixed_put(GTK_FIXED(fixed), password_entry, (width - 200) / 2, (height - 50) / 2);
 
     // login button and passing the value of username and password
-    GtkWidget *login_button = gtk_button_new_with_label("Login");
+    GtkWidget *login_button = gtk_button_new_with_label("REGISTER");
     gtk_widget_set_size_request(login_button, 200, 50);
     gtk_fixed_put(GTK_FIXED(fixed), login_button, (width - 200) / 2, (height - 50) / 2 + 50);
     g_object_set_data(G_OBJECT(login_button), "username_entry", username_entry);
@@ -33,17 +33,10 @@ void firstlanding()
 
     GtkWidget *exit = gtk_button_new_with_label("EXIT");
     g_signal_connect(exit, "clicked", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), exit, width - 90, 10);
+    gtk_fixed_put(GTK_FIXED(fixed), exit, width - 70, 5);
 
     // header and footer text
-    GtkWidget *welcometext = gtk_label_new("WELCOME TO TIGER'S BUS TICKET MANAGEMENT SYSTEM!");
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 30pt; }", -1, NULL);
-    GtkStyleContext *styleContext = gtk_widget_get_style_context(welcometext);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    GtkWidget *footer = gtk_label_new("DESIGNED AND CODED BY AADARSHA KHANAL, BIGYAN POKHREL & NISHANT SUBEDI");
-    gtk_fixed_put(GTK_FIXED(fixed), welcometext, 82, 1);
-    gtk_fixed_put(GTK_FIXED(fixed), footer, (width - 550) / 2, height - 45);
+    showHF();
 
     GtkWidget *request1 = gtk_label_new("LOOKS LIKE THIS IS THE FIRST TIME YOU ARE USING THIS APP \n     PLEASE SETUP AN ADMIN ACCOUNT FOR FURTHER USE");
     GtkCssProvider *cssProvider1 = gtk_css_provider_new();

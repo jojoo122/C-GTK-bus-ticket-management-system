@@ -9,6 +9,13 @@ void admin_register(GtkWidget *button, gpointer user_data)
     const gchar *password = gtk_entry_get_text(GTK_ENTRY(password_entry));
     strcpy(entered_username, username);
     strcpy(entered_password, password);
+
+    if(strcmp(entered_password,"") == 0)
+    {
+        gtk_label_set_text(GTK_LABEL(registrationsuccess), "PLEASE ENTER PASSWORD!");
+    }
+    else
+    {
     if (registeradmin())
     {
         gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
@@ -18,6 +25,7 @@ void admin_register(GtkWidget *button, gpointer user_data)
     {
         gtk_label_set_text(GTK_LABEL(registrationsuccess), "UNKNOWN ERROR!");
     }
+}
 }
 
 struct stat st = {0};

@@ -13,12 +13,7 @@ void landing()
     fixed = gtk_fixed_new();
 
     //the header and text
-    GtkWidget *welcometext = gtk_label_new("WELCOME TO TIGER'S BUS TICKET MANAGEMENT SYSTEM!");
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 30pt; }", -1, NULL);
-    GtkStyleContext *styleContext = gtk_widget_get_style_context(welcometext);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    GtkWidget *footer = gtk_label_new("DESIGNED AND CODED BY AADARSHA KHANAL, BIGYAN POKHREL & NISHANT SUBEDI");
+    showHF();
 
     //buttons
     button = gtk_button_new_with_label("LOGIN AS ADMIN");
@@ -35,8 +30,6 @@ void landing()
     //fixing the buttons and texts position
     gtk_fixed_put(GTK_FIXED(fixed), button, (width - 200) / 2, (height - 50) / 2);
     gtk_fixed_put(GTK_FIXED(fixed), button1, (width - 200) / 2, (height - 50) / 2 + 100);
-    gtk_fixed_put(GTK_FIXED(fixed), welcometext, 82, 1);
-    gtk_fixed_put(GTK_FIXED(fixed), footer, (width - 550) / 2, height - 45);
 
     //adding component to the window
     gtk_container_add(GTK_CONTAINER(window), fixed);
