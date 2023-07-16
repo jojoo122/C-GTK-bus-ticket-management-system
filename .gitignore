@@ -3,3 +3,4 @@ Makefile
 main
 .files
 .vscode
+temp.c
