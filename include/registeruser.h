@@ -1,7 +1,6 @@
 int userregister();
 void user_register(GtkWidget *button, gpointer user_data);
-void registerUser()
-{
+void registerUser(){
     clearmywindow();
     g_signal_connect(GTK_WINDOW(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     fixed = gtk_fixed_new();
@@ -11,21 +10,18 @@ void registerUser()
     GtkWidget *registrationsuccess = gtk_label_new(NULL);
     gtk_fixed_put(GTK_FIXED(fixed), registrationsuccess, (width - 200) / 2, height - 300);
 
-    // entry to take username
     GtkWidget *username_entry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(username_entry), "Username");
     gtk_widget_set_size_request(username_entry, 200, 50);
     gtk_fixed_put(GTK_FIXED(fixed), username_entry, (width - 200) / 2, (height - 50) / 2 - 50);
 
-    // entry to take password
     GtkWidget *password_entry = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(password_entry), "Password");
     gtk_entry_set_visibility(GTK_ENTRY(password_entry), FALSE);
     gtk_widget_set_size_request(password_entry, 200, 50);
     gtk_fixed_put(GTK_FIXED(fixed), password_entry, (width - 200) / 2, (height - 50) / 2);
 
-    // login button and passing the value of username and password
-    GtkWidget *login_button = gtk_button_new_with_label("Login");
+    GtkWidget *login_button = gtk_button_new_with_label("Register User");
     gtk_widget_set_size_request(login_button, 200, 50);
     gtk_fixed_put(GTK_FIXED(fixed), login_button, (width - 200) / 2, (height - 50) / 2 + 50);
     g_object_set_data(G_OBJECT(login_button), "username_entry", username_entry);
@@ -40,7 +36,6 @@ void registerUser()
     g_signal_connect(exit, "clicked", G_CALLBACK(gtk_main_quit), NULL);
     gtk_fixed_put(GTK_FIXED(fixed), exit, width - 70, 5);
 
-    // header and footer text
     showHF();
 
     GtkWidget *request1 = gtk_label_new("PLEASE ENTER THE NEW USER INFO");
@@ -48,8 +43,6 @@ void registerUser()
     gtk_css_provider_load_from_data(cssProvider1, "label { font-size: 20pt; }", -1, NULL);
     GtkStyleContext *styleContext1 = gtk_widget_get_style_context(request1);
     gtk_style_context_add_provider(styleContext1, GTK_STYLE_PROVIDER(cssProvider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_widget_set_halign(request1, GTK_ALIGN_CENTER);
-    gtk_widget_set_valign(request1, GTK_ALIGN_CENTER);
     gtk_fixed_put(GTK_FIXED(fixed), request1, (width - 400) / 2, 200);
 
     gtk_widget_show_all(window);

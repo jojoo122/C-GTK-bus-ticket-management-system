@@ -1,5 +1,6 @@
 void userpannel()
 {
+    iden = 0;
     clearmywindow();
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
@@ -17,7 +18,7 @@ void userpannel()
 
     GtkWidget *bookticket = gtk_button_new_with_label("BOOK A TICKET");
     gtk_widget_set_size_request(bookticket, 400, 50);
-    // g_signal_connect(bookticket, "clicked", G_CALLBACK(bookTicket), NULL);
+    g_signal_connect(bookticket, "clicked", G_CALLBACK(bookTicket), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),bookticket,(width-400)/2,(height/2)-50);
 
     GtkWidget *cancelticket = gtk_button_new_with_label("CANCEL A TICKET");

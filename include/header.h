@@ -2,8 +2,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <ctype.h>
+
+int iden;
+
+void registerBus();
 
 void userpannel();
+
+void bookTicket();
 
 void adminpannel();
 
@@ -82,3 +89,45 @@ void showLE()
     g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
     gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
 }
+
+void showLEV2(char where[5])
+{
+    if(strcmp(where,"admin") == 0){
+    GtkWidget *goback = gtk_button_new_with_label("GO BACK");
+    g_signal_connect(goback,"clicked",G_CALLBACK(adminpannel),NULL);
+    gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
+    GtkWidget *exit = gtk_button_new_with_label("EXIT");
+    g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
+    gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
+    }
+    if(strcmp(where,"user") == 0){
+    GtkWidget *goback = gtk_button_new_with_label("GO BACK");
+    g_signal_connect(goback,"clicked",G_CALLBACK(userpannel),NULL);
+    gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
+    GtkWidget *exit = gtk_button_new_with_label("EXIT");
+    g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
+    gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
+    }
+}
+
+gboolean validate_entry_input(GtkEntry *entry, gchar *text, gint length, gint *position, gpointer user_data)
+{
+    for (gint i = 0; i < length; i++)
+    {
+        if (!isdigit(text[i]))
+        {
+            return TRUE;
+        }
+    }
+
+    return FALSE;
+}
+
+void entry_insert_text(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    if (validate_entry_input(entry, new_text, new_text_length, position, user_data))
+    {
+        g_signal_stop_emission_by_name(entry, "insert-text");
+    }
+}
+

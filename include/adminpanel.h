@@ -1,5 +1,6 @@
 void adminpannel()
 {
+    iden = 1;
     clearmywindow();
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
@@ -11,7 +12,7 @@ void adminpannel()
 
     GtkWidget *registerbus = gtk_button_new_with_label("REGISTER A NEW BUS");
     gtk_widget_set_size_request(registerbus, 400, 50);
-    //g_signal_connect(registerbus, "clicked", G_CALLBACK(registerBus), NULL);
+    g_signal_connect(registerbus, "clicked", G_CALLBACK(registerBus), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),registerbus,(width-400)/2-250,(height/2)-300);
 
     GtkWidget *deregisterbus = gtk_button_new_with_label("REMOVE A BUS");
@@ -21,7 +22,7 @@ void adminpannel()
     
     GtkWidget *bookticket = gtk_button_new_with_label("BOOK A TICKET");
     gtk_widget_set_size_request(bookticket, 400, 50);
-    // g_signal_connect(bookticket, "clicked", G_CALLBACK(bookTicket), NULL);
+    g_signal_connect(bookticket, "clicked", G_CALLBACK(bookTicket), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),bookticket,(width-400)/2-250,(height/2)-100);
 
     GtkWidget *cancelticket = gtk_button_new_with_label("CANCEL A TICKET");
