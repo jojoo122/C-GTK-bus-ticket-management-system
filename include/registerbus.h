@@ -97,6 +97,10 @@ void bus_register(GtkWidget *button, gpointer user_data)
         else
         {
             fprintf(fptr1, "%s\n", BusName);
+            char boBooked[200],unBooked[200];
+            sprintf(boBooked, ".files/Booked%s",bus_Register_Number);
+            sprintf(unBooked,"./files/UnBooked%s",bus_Register_Number);
+            printf("%s\n%s\n",boBooked,unBooked);
             gtk_label_set_text(GTK_LABEL(longmessage), NULL);
             gtk_label_set_text(GTK_LABEL(registrationsuccess), "REGISTRATION SUCCESS!");
         }
