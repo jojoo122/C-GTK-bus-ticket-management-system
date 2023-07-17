@@ -74,6 +74,14 @@ void user_register(GtkWidget *button, gpointer user_data)
         {
             gtk_label_set_text(GTK_LABEL(registrationsuccess), "USER ALREADY EXISTS!");
         }
+        else if (userregister() == 9)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT USERNAME");
+        }
+        else if (userregister() == 10)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT PASSWORD");
+        }
         else
         {
             gtk_label_set_text(GTK_LABEL(registrationsuccess), "UNKNWON ERROR!");
@@ -82,6 +90,14 @@ void user_register(GtkWidget *button, gpointer user_data)
 }
 int userregister()
 {
+    if(strlen(entered_username) < 3)
+    {
+        return 9;
+    }
+    if(strlen(entered_password) < 8)
+    {
+        return 10;
+    }
     if (osname == 1 || osname == 3)
     {
         char usrnm[20], pass[20];

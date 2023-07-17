@@ -10,28 +10,45 @@ void admin_register(GtkWidget *button, gpointer user_data)
     strcpy(entered_username, username);
     strcpy(entered_password, password);
 
-    if(strcmp(entered_password,"") == 0)
+    if (strcmp(entered_password, "") == 0)
     {
         gtk_label_set_text(GTK_LABEL(registrationsuccess), "PLEASE ENTER PASSWORD!");
     }
     else
     {
-    if (registeradmin())
-    {
-        gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
-        landing();
+        if (registeradmin() == 1)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
+            landing();
+        }
+        else if (registeradmin() == 10)
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT PASSOWRD!");
+        }
+        else if (registeradmin() == 9)
+        {
+            
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT USERNAME!");
+        }
+        else
+        {
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "UNKNOWN ERROR!");
+        }
     }
-    else
-    {
-        gtk_label_set_text(GTK_LABEL(registrationsuccess), "UNKNOWN ERROR!");
-    }
-}
 }
 
 struct stat st = {0};
 
 int registeradmin()
 {
+    if (strlen(entered_username) < 3)
+    {
+        return 9;
+    }
+    if (strlen(entered_password) < 8)
+    {
+        return 10;
+    }
     if (osname == 1)
     {
         if (stat(".files", &st) == -1)

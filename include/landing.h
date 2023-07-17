@@ -1,7 +1,7 @@
 void landing()
 {
     clearmywindow();
-    //declaring widgets
+    
     GtkWidget *button;
     GtkWidget *button1;
 
