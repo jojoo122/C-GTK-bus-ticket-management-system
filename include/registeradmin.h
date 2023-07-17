@@ -23,12 +23,12 @@ void admin_register(GtkWidget *button, gpointer user_data)
         }
         else if (registeradmin() == 10)
         {
-            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT PASSOWRD!");
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "PASSOWRD MUST BE > 7");
         }
         else if (registeradmin() == 9)
         {
             
-            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT USERNAME!");
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "USERNAME MUST BE > 2");
         }
         else
         {

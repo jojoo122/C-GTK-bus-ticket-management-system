@@ -42,16 +42,16 @@ void removeUser()
         while (fscanf(fpp, "%s %s ", usr, pass) == 2)
         {
             GtkWidget *wh = gtk_label_new("REGISTERED USERS: ");
-            gtk_fixed_put(GTK_FIXED(fixed), wh, (width - 350), (height - 620) / 2);
+            gtk_fixed_put(GTK_FIXED(fixed), wh, (width - 270), (height - 620) / 2);
             sprintf(listUser,"%d. %s",userNumList, usr);
             list = gtk_label_new(listUser);
             GtkCssProvider *cssProvider = gtk_css_provider_new();
-            gtk_css_provider_load_from_data(cssProvider, "label { font-size: 26pt; }", -1, NULL);
+            gtk_css_provider_load_from_data(cssProvider, "label { font-size: 18pt; }", -1, NULL);
             GtkStyleContext *styleContext = gtk_widget_get_style_context(list);
             GtkCssProvider *cssProvider1 = gtk_css_provider_new();
-            gtk_css_provider_load_from_data(cssProvider1, "label { font-size: 18pt; }", -1, NULL);
-            gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+            gtk_css_provider_load_from_data(cssProvider1, "label { font-size: 16pt; }", -1, NULL);
             GtkStyleContext *styleContext1 = gtk_widget_get_style_context(wh);
+            gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider1), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
             gtk_style_context_add_provider(styleContext1, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
             gtk_grid_attach(GTK_GRID(grid), list, 1, 0 + n, 1, 1);
             n += 10;

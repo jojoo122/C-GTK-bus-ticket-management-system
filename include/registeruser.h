@@ -76,11 +76,11 @@ void user_register(GtkWidget *button, gpointer user_data)
         }
         else if (userregister() == 9)
         {
-            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT USERNAME");
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "USERNAME MUST BE > 2");
         }
         else if (userregister() == 10)
         {
-            gtk_label_set_text(GTK_LABEL(registrationsuccess), "TOO SHORT PASSWORD");
+            gtk_label_set_text(GTK_LABEL(registrationsuccess), "PASSWORD MUST BE > 7");
         }
         else
         {
