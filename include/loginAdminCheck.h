@@ -24,7 +24,7 @@ void on_login_clicked_admin(GtkWidget *button, gpointer user_data)
     }
     else if (result == -1)
     {
-        gtk_label_set_text(GTK_LABEL(loginfailed), "USER NOT FOUND!");
+        gtk_label_set_text(GTK_LABEL(loginfailed), "ADMIN NOT FOUND!");
     }
     else if (result == 2)
     {

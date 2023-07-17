@@ -19,6 +19,7 @@ void landing()
     button = gtk_button_new_with_label("LOGIN AS ADMIN");
     gtk_widget_set_size_request(button, 200, 50);
     g_signal_connect(button, "clicked", G_CALLBACK(adminLogin), NULL);
+    
     button1 = gtk_button_new_with_label("LOGIN AS USER");
     g_signal_connect(button1, "clicked", G_CALLBACK(userLogin), NULL);
     gtk_widget_set_size_request(button1, 200, 50);

@@ -73,6 +73,17 @@ void bus_register(GtkWidget *button, gpointer user_data)
     const gchar *busname = gtk_entry_get_text(GTK_ENTRY(busname_entry));
     const gchar *total_seat = gtk_entry_get_text(GTK_ENTRY(total_seat_entry));
     const gchar *busRegisterNumber = gtk_entry_get_text(GTK_ENTRY(bus_register_number));
+    char busRegChe[50];
+    strcpy(busRegChe,busRegisterNumber);
+    int len = strlen(busRegChe), result;
+
+    for(int i = 0 ; i < len; i++){
+        if(busRegChe[i] == 32)
+        {
+            result = 1;
+            break;
+        }
+    }
 
     if (strcmp(busname, "") == 0 || strcmp(total_seat, "") == 0 || strcmp(busRegisterNumber, "") == 0)
     {
@@ -81,6 +92,10 @@ void bus_register(GtkWidget *button, gpointer user_data)
     else if(strlen(busname) < 3)
     {
         gtk_label_set_text(GTK_LABEL(longmessage), "BUS NAME MUST BE 3 OR MORE CHARACTERS!");
+    }
+    else if(result == 1)
+    {
+        gtk_label_set_text(GTK_LABEL(longmessage), "BUS LICENSE PLATE NUMBER CAN NOT CONTAIN SPACE!");
     }
     else
     {
@@ -99,7 +114,7 @@ void bus_register(GtkWidget *button, gpointer user_data)
             fprintf(fptr1, "%s\n", BusName);
             char boBooked[200],unBooked[200];
             sprintf(boBooked, ".files/Booked%s",bus_Register_Number);
-            sprintf(unBooked,"./files/UnBooked%s",bus_Register_Number);
+            sprintf(unBooked,".files/UnBooked%s",bus_Register_Number);
             printf("%s\n%s\n",boBooked,unBooked);
             gtk_label_set_text(GTK_LABEL(longmessage), NULL);
             gtk_label_set_text(GTK_LABEL(registrationsuccess), "REGISTRATION SUCCESS!");
