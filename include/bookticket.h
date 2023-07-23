@@ -1,5 +1,18 @@
+int chkarr(int arr[], int n, int pp)
+{
+    for (int i = 0; i < pp; i++)
+    {
+        if (arr[i] == n)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
+int ticketNumber;
+void returnNumberTicket(GtkWidget *button);
 void book_ticket_system(GtkWidget *button);
-void listNumTicket();
+void listBUSTicket();
 void bookTicket()
 {
     clearmywindow();
@@ -117,8 +130,9 @@ void bookTicket()
         fclose(license);
 
         GtkWidget *busid = gtk_entry_new();
-        gtk_widget_set_size_request(busid, 200, 50);
-        gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 200) / 2, (height - 50) / 2);
+        gtk_entry_set_placeholder_text(GTK_ENTRY(busid), "PLEASE ENTER LIST ID OR LICENSE ID");
+        gtk_widget_set_size_request(busid, 270, 50);
+        gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 270) / 2, (height - 50) / 2);
 
         GtkWidget *book = gtk_button_new_with_label("GO TO BOOKING PORTAL");
         gtk_widget_set_size_request(book, 200, 50);
@@ -170,7 +184,7 @@ void book_ticket_system(GtkWidget *button)
         if (count == 0)
         {
             int elistnum = atoi(busId);
-            int seat, listnum = 0;
+            int seat, listnum = 1;
             char lsid[200];
             FILE *fptr = fopen(".files/BusSeatLicense", "r");
             while (fscanf(fptr, "%d %s ", &seat, lsid) == 2)
@@ -188,7 +202,7 @@ void book_ticket_system(GtkWidget *button)
             else
             {
                 gtk_label_set_text(GTK_LABEL(message), "REDIRECTING");
-                listNumTicket();
+                listBUSTicket(seat, lsid);
             }
             if (fptr != NULL)
             {
@@ -197,10 +211,43 @@ void book_ticket_system(GtkWidget *button)
         }
         else
         {
+            int a = strlen(busId);
+            char busid[a];
+            strcpy(busid, busId);
+            int seat = 0;
+            char lsid[500], lsId[500];
+            memset(lsid, 0, sizeof(lsid));
+            for (int i = 0; i < a; i++)
+            {
+                busid[i] = tolower(busid[i]);
+            }
+            FILE *fptr1 = fopen(".files/BusSeatLicense", "r");
+            while (fscanf(fptr1, "%d %s ", &seat, lsid) == 2)
+            {
+                strcpy(lsId, lsid);
+                int b = strlen(lsId);
+                for (int i = 0; i < b; i++)
+                {
+                    lsId[i] = tolower(lsId[i]);
+                }
+                if (strcmp(lsId, busid) == 0)
+                {
+                    break;
+                }
+            }
+            fclose(fptr1);
+            if (strcmp(lsId, busid) == 0)
+            {
+                listBUSTicket(seat, lsid);
+            }
+            else
+            {
+                gtk_label_set_text(GTK_LABEL(message), "INVALID LICENSE ID!");
+            }
         }
     }
 }
-void listNumTicket()
+void listBUSTicket(int seat, char lcid[])
 {
     clearmywindow();
 
@@ -210,11 +257,503 @@ void listNumTicket()
     showHF();
 
     GtkWidget *goback = gtk_button_new_with_label("GO BACK");
-    g_signal_connect(goback,"clicked",G_CALLBACK(bookTicket),NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),goback,5,5);
+    g_signal_connect(goback, "clicked", G_CALLBACK(bookTicket), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), goback, 5, 5);
     GtkWidget *exit = gtk_button_new_with_label("EXIT");
-    g_signal_connect(exit,"clicked",G_CALLBACK(gtk_main_quit),NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),exit,width-70,5);
+    g_signal_connect(exit, "clicked", G_CALLBACK(gtk_main_quit), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), exit, width - 70, 5);
+
+    GtkWidget *grid = gtk_grid_new();
+    gtk_fixed_put(GTK_FIXED(fixed), grid, 1220, 300);
+
+    GtkWidget *label;
+
+    GtkWidget *message = gtk_label_new(NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), message, (width - 110) / 2, (height - 10) / 2 + 100);
+
+    label = gtk_label_new("  BUS TICKETS THAT\nARE BOOKED ARE RED");
+    gtk_fixed_put(GTK_FIXED(fixed), label, 1200, 260);
+
+    GtkWidget *bus_ticket_number = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(bus_ticket_number), "PLEASE ENTER TICKET NUMBER");
+    gtk_widget_set_size_request(bus_ticket_number, 240, 50);
+    gtk_entry_set_max_length(GTK_ENTRY(bus_ticket_number), 3);
+    g_signal_connect(bus_ticket_number, "insert-text", G_CALLBACK(entry_insert_text), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), bus_ticket_number, (width - 240) / 2, (height - 30) / 2);
+
+
+    GtkWidget *book_button = gtk_button_new_with_label("BOOK NOW");
+    gtk_widget_set_size_request(book_button, 100, 40);
+    g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
+    g_object_set_data(G_OBJECT(book_button), "message", message);
+    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 110) / 2, (height - 10) / 2 + 50);
+    g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
+    g_signal_connect(book_button, "clicked", G_CALLBACK(returnNumberTicket), NULL);
+
+
+    int totalseat = seat;
+    int tems = totalseat;
+    int row = 4;
+    int col;
+    int q = 0;
+
+    char boBus[800];
+    sprintf(boBus, ".files/Booked-%s", lcid);
+
+    int qr = 0, ar[totalseat];
+    memset(ar, 0, sizeof(ar));
+
+    FILE *booked, *booked1;
+    booked = fopen(boBus, "r");
+    booked1 = fopen(boBus, "r");
+    if (fscanf(booked1, "%d ", &ar[qr]) != 1)
+    {
+        qr++;
+    }
+    else
+    {
+        while (fscanf(booked, "%d", &ar[qr]) == 1)
+        {
+            qr++;
+        }
+    }
+    if (booked != NULL)
+    {
+        fclose(booked);
+        fclose(booked1);
+    }
+
+    if (totalseat % 4 != 0)
+    {
+        while (1)
+        {
+            if ((totalseat - q) % 4 == 0)
+            {
+                col = (totalseat - q) / row;
+                break;
+            }
+            q++;
+        }
+    }
+    else
+    {
+        q = 1;
+    }
+    int k = 1, te;
+    int y;
+    int v = 0;
+    if (totalseat % 4 != 0)
+    {
+        for (int i = q - 1; i > 0; i--)
+        {
+            for (int yy = 0; yy < qr; yy++)
+            {
+                if (ar[yy] == k)
+                {
+                    char button_label[10];
+                    sprintf(button_label, "0%d ", k);
+                    label = gtk_label_new(button_label);
+                    GtkStyleContext *context = gtk_widget_get_style_context(label);
+                    gtk_style_context_add_class(context, "red-label");
+                    gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                }
+                else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                {
+                    char button_label[10];
+                    sprintf(button_label, "0%d ", k);
+                    label = gtk_label_new(button_label);
+                    gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                }
+            }
+            k++;
+            v++;
+        }
+
+        for (int i = col; i > 0; i--)
+        {
+            y = 1;
+            te = 0;
+            for (int j = row; j > 0; j--)
+            {
+                if (te == 2)
+                {
+                    y = j + 2;
+                }
+                if (k < 10)
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                else
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                if (k == totalseat - 4)
+                {
+                    break;
+                }
+                te++;
+                y++;
+            }
+            if (k == totalseat - 4)
+            {
+                break;
+            }
+        }
+        int p = 1;
+        while (1)
+        {
+            if (k != totalseat - 1)
+            {
+                for (int yy = 0; yy < qr; yy++)
+                {
+                    if (ar[yy] == k)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        GtkStyleContext *context = gtk_widget_get_style_context(label);
+                        gtk_style_context_add_class(context, "red-label");
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                    else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                }
+            }
+            if (k == totalseat)
+            {
+                break;
+            }
+            if (k == totalseat - 1)
+            {
+                for (int yy = 0; yy < qr; yy++)
+                {
+                    if (ar[yy] == k)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        GtkStyleContext *context = gtk_widget_get_style_context(label);
+                        gtk_style_context_add_class(context, "red-label");
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                    else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                }
+            }
+            k++;
+            p++;
+        }
+    }
+    else
+    {
+        totalseat = totalseat - 1;
+        while (1)
+        {
+            if ((totalseat - q) % 4 == 0)
+            {
+                col = (totalseat - q) / row;
+                break;
+            }
+            q++;
+        }
+        q++;
+        if (q % 2 != 0)
+        {
+            for (int i = q - 1; i > 0; i--)
+            {
+                for (int yy = 0; yy < qr; yy++)
+                {
+                    if (ar[yy] == k)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "0%d ", k);
+                        label = gtk_label_new(button_label);
+                        GtkStyleContext *context = gtk_widget_get_style_context(label);
+                        gtk_style_context_add_class(context, "red-label");
+                        gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                        break;
+                    }
+                    else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "0%d ", k);
+                        label = gtk_label_new(button_label);
+                        gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                        break;
+                    }
+                }
+                k++;
+                v++;
+            }
+        }
+        if (q % 2 == 0)
+        {
+            for (int i = q - 1; i > 0; i--)
+            {
+                if (i == 1)
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, 5 - 3, 0, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, 5 - 3, 0, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                else
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, 5 - v, 0, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                    v++;
+                }
+            }
+        }
+
+        for (int i = col; i > 0; i--)
+        {
+            y = 1;
+            te = 0;
+            for (int j = row; j > 0; j--)
+            {
+                if (te == 2)
+                {
+                    y = j + 2;
+                }
+                if (k < 10)
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "0%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                else
+                {
+                    for (int yy = 0; yy < qr; yy++)
+                    {
+                        if (ar[yy] == k)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "%d ", k);
+                            label = gtk_label_new(button_label);
+                            GtkStyleContext *context = gtk_widget_get_style_context(label);
+                            gtk_style_context_add_class(context, "red-label");
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                        else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                        {
+                            char button_label[10];
+                            sprintf(button_label, "%d ", k);
+                            label = gtk_label_new(button_label);
+                            gtk_grid_attach(GTK_GRID(grid), label, y, col - i + 1, 1, 1);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                if (k == totalseat + 1 - 4)
+                {
+                    break;
+                }
+                te++;
+                y++;
+            }
+            if (k == totalseat + 1 - 4)
+            {
+                break;
+            }
+        }
+        int p = 1;
+        totalseat = tems;
+        while (1)
+        {
+            if (k != totalseat - 1)
+            {
+                for (int yy = 0; yy < qr; yy++)
+                {
+                    if (ar[yy] == k)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        GtkStyleContext *context = gtk_widget_get_style_context(label);
+                        gtk_style_context_add_class(context, "red-label");
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                    else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                }
+            }
+            if (k == totalseat)
+            {
+                break;
+            }
+            if (k == totalseat - 1)
+            {
+                for (int yy = 0; yy < qr; yy++)
+                {
+                    if (ar[yy] == k)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        GtkStyleContext *context = gtk_widget_get_style_context(label);
+                        gtk_style_context_add_class(context, "red-label");
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                    else if (ar[yy] != k && chkarr(ar, k, tems) == 0)
+                    {
+                        char button_label[10];
+                        sprintf(button_label, "%d ", k);
+                        label = gtk_label_new(button_label);
+                        gtk_grid_attach(GTK_GRID(grid), label, p, col + 1, 1, 1);
+                        break;
+                    }
+                }
+            }
+            k++;
+            p++;
+        }
+    }
+    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    GError *error = NULL;
+    gtk_css_provider_load_from_data(cssProvider, ".red-label { color: red; }", -1, &error);
+    if (error != NULL)
+    {
+        g_printerr("Error loading CSS: %s\n", error->message);
+        g_error_free(error);
+    }
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(), GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     gtk_widget_show_all(window);
+}
+
+void returnNumberTicket(GtkWidget *button)
+{
+    GtkWidget *busTicketNumber = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "bus_ticket_number"));
+
+    GtkWidget *message = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "message"));
+
+    const gchar *ticket = gtk_entry_get_text(GTK_ENTRY(busTicketNumber));
+
+    // gtk_label_set_text(GTK_LABEL(message),"I LOVE THIALAND");
+
+    ticketNumber = atoi(ticket);
 }

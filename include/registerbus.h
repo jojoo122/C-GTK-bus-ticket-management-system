@@ -119,17 +119,19 @@ void bus_register(GtkWidget *button, gpointer user_data)
                     break;
                 }
             }
-            len = strlen(licenseNumber);
+            char linb[500];
+            strcpy(linb,licenseNumber);
+            len = strlen(linb);
             for (int i = 0; i < len; i++)
             {
-                licenseNumber[i] = tolower(licenseNumber[i]);
+                linb[i] = tolower(linb[i]);
             }
             len = strlen(chklis);
             for (int i = 0; i < len; i++)
             {
                 chklis[i] = tolower(chklis[i]);
             }
-            if (strcmp(licenseNumber, chklis) == 0)
+            if (strcmp(linb, chklis) == 0)
             {
                 gtk_label_set_text(GTK_LABEL(registrationsuccess), "ALREADY EXISTS!");
                 gtk_label_set_text(GTK_LABEL(longmessage), NULL);
