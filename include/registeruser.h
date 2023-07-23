@@ -98,8 +98,6 @@ int userregister()
     {
         return 10;
     }
-    if (osname == 1 || osname == 3)
-    {
         char usrnm[20], pass[20];
         FILE *fp2, *fp3, *fp;
         fp2 = fopen(".files/userlist", "r");
@@ -139,6 +137,5 @@ int userregister()
         fprintf(fp, "%s %s ", entered_username, entered_password);
         fclose(fp);
         fclose(fp3);
-    }
     return 1;
 }
