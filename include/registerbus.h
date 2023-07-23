@@ -72,9 +72,10 @@ void bus_register(GtkWidget *button, gpointer user_data)
     const gchar *busname = gtk_entry_get_text(GTK_ENTRY(busname_entry));
     const gchar *total_seat = gtk_entry_get_text(GTK_ENTRY(total_seat_entry));
     const gchar *busRegisterNumber = gtk_entry_get_text(GTK_ENTRY(bus_register_number));
-    char busRegChe[50];
+    char busRegChe[200] = {0};
+    char boBooked[2000] = {0}, unBooked[2000] = {0}, boBookedUserName[3000] = {0};
     strcpy(busRegChe, busRegisterNumber);
-    int len = strlen(busRegChe), result;
+    int len = strlen(busRegChe), result = 0;
 
     for (int i = 0; i < len; i++)
     {
@@ -124,17 +125,39 @@ void bus_register(GtkWidget *button, gpointer user_data)
                         break;
                     }
                 }
-            }
-            fclose(check);
-            if (strcmp(checkbrn, bus_Register_Number) == 0)
-            {
-                gtk_label_set_text(GTK_LABEL(longmessage), NULL);
-                gtk_label_set_text(GTK_LABEL(registrationsuccess), "BUS ALREADY EXISTS!");
+                if (strcmp(checkbrn, bus_Register_Number) == 0)
+                {
+                    gtk_label_set_text(GTK_LABEL(longmessage), NULL);
+                    gtk_label_set_text(GTK_LABEL(registrationsuccess), "BUS ALREADY EXISTS!");
+                }
+                else
+                {
+                    fprintf(fptr1, "%s\n", BusName);
+                    sprintf(boBooked, ".files/Booked%s", bus_Register_Number);
+                    sprintf(unBooked, ".files/UnBooked%s", bus_Register_Number);
+                    sprintf(boBookedUserName, ".files/BookedUserName%s", bus_Register_Number);
+                    FILE *make1, *make2, *make3, *make4;
+                    make1 = fopen(boBooked, "a");
+                    make2 = fopen(boBookedUserName, "a");
+                    make3 = fopen(unBooked, "a");
+                    make4 = fopen(".files/buslistSeatLicence", "a");
+                    fprintf(make4, "%s %d ", bus_Register_Number, busTotalSeat);
+                    for (int i = 1; i <= busTotalSeat; i++)
+                    {
+                        fprintf(make3, "%d ", i);
+                    }
+                    fclose(make1);
+                    fclose(make2);
+                    fclose(make3);
+                    fclose(make4);
+                    gtk_label_set_text(GTK_LABEL(longmessage), NULL);
+                    gtk_label_set_text(GTK_LABEL(registrationsuccess), "REGISTRATION SUCCESS!");
+                    adminpannel();
+                }
             }
             else
             {
                 fprintf(fptr1, "%s\n", BusName);
-                char boBooked[200], unBooked[200], boBookedUserName[300];
                 sprintf(boBooked, ".files/Booked%s", bus_Register_Number);
                 sprintf(unBooked, ".files/UnBooked%s", bus_Register_Number);
                 sprintf(boBookedUserName, ".files/BookedUserName%s", bus_Register_Number);
@@ -156,6 +179,7 @@ void bus_register(GtkWidget *button, gpointer user_data)
                 gtk_label_set_text(GTK_LABEL(registrationsuccess), "REGISTRATION SUCCESS!");
                 adminpannel();
             }
+            fclose(check);
         }
         fclose(fptr1);
     }
