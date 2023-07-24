@@ -822,9 +822,11 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
         busTicketNum = atoi(ticket);
         strcpy(passengerName, username);
         strcpy(passengerPhoneNumber, userph);
-        char BSL[] = ".files/BusSeatLicense", chkli[500], boBus[1000], unboBus[1000];
+        char BSL[] = ".files/BusSeatLicense", chkli[500], boBus[1000], unboBus[1000], usrinfo[1000], usrph[1000];
         sprintf(boBus, ".files/Booked-%s", lid);
         sprintf(unboBus, ".files/UnBooked-%s", lid);
+        sprintf(usrinfo, ".files/UserInfo-%s", lid);
+        sprintf(usrph, ".files/UserInfoPhone-%s", lid);
         int totalSeat, seatnum;
         FILE *chk = fopen(BSL, "r");
         while (fscanf(chk, "%d %s ", &totalSeat, chkli) == 2)
@@ -856,8 +858,32 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
             }
             else
             {
-                
+                int tempseat;
+                FILE *booked, *unBooked, *USRinfo, *USRph, *temp;
+                booked = fopen(boBus,"a");
+                unBooked = fopen(unboBus,"r");
+                USRinfo = fopen(usrinfo,"a");
+                USRph = fopen(usrph,"a");
+                temp = fopen(".files/temp","a");
+                fprintf(USRinfo,"%s\n",passengerName);                
+                fclose(USRinfo);
+                fprintf(USRph,"%s ",passengerPhoneNumber);
+                fclose(USRph);
+                fprintf(booked,"%d ",busTicketNum);
+                fclose(booked);
+                while(fscanf(unBooked,"%d ",&tempseat) == 1)
+                {
+                    if(tempseat != busTicketNum)
+                    {
+                        fprintf(temp,"%d ",tempseat);
+                    }
+                }
+                fclose(unBooked);
+                fclose(temp);
+                remove(unboBus);
+                rename(".files/temp",unboBus);
                 gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
+                bookTicket();
             }
         }
         else
