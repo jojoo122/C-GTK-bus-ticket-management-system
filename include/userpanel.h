@@ -23,7 +23,7 @@ void userpannel()
 
     GtkWidget *cancelticket = gtk_button_new_with_label("CANCEL A TICKET");
     gtk_widget_set_size_request(cancelticket, 400, 50);
-    // g_signal_connect(cancelticket, "clicked", G_CALLBACK(cancelTicket), NULL);
+    g_signal_connect(cancelticket, "clicked", G_CALLBACK(cancelTicket), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),cancelticket,(width-400)/2,(height/2)+50);
 
     gtk_widget_show_all(window);

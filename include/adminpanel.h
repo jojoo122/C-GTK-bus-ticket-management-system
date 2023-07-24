@@ -27,7 +27,7 @@ void adminpannel()
 
     GtkWidget *cancelticket = gtk_button_new_with_label("CANCEL A TICKET");
     gtk_widget_set_size_request(cancelticket, 400, 50);
-    // g_signal_connect(cancelticket, "clicked", G_CALLBACK(cancelTicket), NULL);
+    g_signal_connect(cancelticket, "clicked", G_CALLBACK(cancelTicket), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),cancelticket,(width-400)/2-250,(height/2));
 
     GtkWidget *adduser = gtk_button_new_with_label("ADD A NEW USER");

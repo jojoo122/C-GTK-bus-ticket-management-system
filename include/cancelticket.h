@@ -1,32 +1,29 @@
-int chkarr(int arr[], int n, int pp)
-{
-    for (int i = 0; i < pp; i++)
-    {
-        if (arr[i] == n)
-        {
-            return 1;
-        }
-    }
-    return 0;
-}
 char lid[500];
 int totalSeat;
-void returnNumberTicket(GtkWidget *button, gpointer data);
-void book_ticket_system(GtkWidget *button);
-void listBUSTicket();
-void bookTicket()
+void CancelNumberTicket(GtkWidget *button, gpointer data);
+void cancel_ticket_system(GtkWidget *button);
+void listBUSTicketCancel(int, char *);
+int delayME(gpointer data)
 {
+    listBUSTicketCancel(totalSeat, lid);
+    return 0;
+}
+void cancelTicket()
+{
+    clearmywindow();
     clearmywindow();
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
+
     if (iden == 1)
     {
         showLEV2("admin");
     }
-    else if (iden == 0)
+    if (iden == 0)
     {
         showLEV2("user");
     }
+
     showHF();
 
     GtkWidget *grid = gtk_grid_new();
@@ -150,18 +147,17 @@ void bookTicket()
         gtk_widget_set_size_request(busid, 270, 50);
         gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 270) / 2, (height - 50) / 2 - 30);
 
-        GtkWidget *book = gtk_button_new_with_label("GO TO BOOKING PORTAL");
-        gtk_widget_set_size_request(book, 200, 50);
-        gtk_fixed_put(GTK_FIXED(fixed), book, (width - 200) / 2, (height - 50) / 2 + 30);
-        g_object_set_data(G_OBJECT(book), "busid", busid);
-        g_object_set_data(G_OBJECT(book), "message", message);
-        g_signal_connect(book, "clicked", G_CALLBACK(book_ticket_system), NULL);
+        GtkWidget *cancel = gtk_button_new_with_label("SELECT THE BUS");
+        gtk_widget_set_size_request(cancel, 200, 50);
+        gtk_fixed_put(GTK_FIXED(fixed), cancel, (width - 200) / 2, (height - 50) / 2 + 30);
+        g_object_set_data(G_OBJECT(cancel), "busid", busid);
+        g_object_set_data(G_OBJECT(cancel), "message", message);
+        g_signal_connect(cancel, "clicked", G_CALLBACK(cancel_ticket_system), NULL);
     }
 
     gtk_widget_show_all(window);
 }
-
-void book_ticket_system(GtkWidget *button)
+void cancel_ticket_system(GtkWidget *button)
 {
     GtkWidget *bus_id = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "busid"));
     GtkWidget *message = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "message"));
@@ -228,7 +224,7 @@ void book_ticket_system(GtkWidget *button)
             else
             {
                 gtk_label_set_text(GTK_LABEL(message), "REDIRECTING");
-                listBUSTicket(seat, lsid);
+                listBUSTicketCancel(seat, lsid);
             }
             if (fptr != NULL)
             {
@@ -264,7 +260,7 @@ void book_ticket_system(GtkWidget *button)
             fclose(fptr1);
             if (strcmp(lsId, busid) == 0)
             {
-                listBUSTicket(seat, lsid);
+                listBUSTicketCancel(seat, lsid);
             }
             else
             {
@@ -273,12 +269,8 @@ void book_ticket_system(GtkWidget *button)
         }
     }
 }
-int delay(gpointer data)
-{
-    listBUSTicket(totalSeat, lid);
-    return 0;
-}
-void listBUSTicket(int seat, char lcid[])
+
+void listBUSTicketCancel(int seat, char lcid[])
 {
     clearmywindow();
     strcpy(lid, lcid);
@@ -301,7 +293,7 @@ void listBUSTicket(int seat, char lcid[])
     GtkWidget *label;
 
     GtkWidget *message = gtk_label_new(NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), message, (width - 110) / 2, (height - 10) / 2 + 150);
+    gtk_fixed_put(GTK_FIXED(fixed), message, (width - 110) / 2, (height - 10) / 2 + 100);
 
     label = gtk_label_new("  BUS TICKETS THAT\nARE BOOKED ARE RED");
     gtk_fixed_put(GTK_FIXED(fixed), label, 1200, 260);
@@ -311,50 +303,37 @@ void listBUSTicket(int seat, char lcid[])
     gtk_css_provider_load_from_data(cssProvider, "label { font-size: 14pt; }", -1, NULL);
     GtkStyleContext *styleContext = gtk_widget_get_style_context(handler1);
     gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), handler1, (width - 240) / 2, (height - 30) / 2 - 180);
+    gtk_fixed_put(GTK_FIXED(fixed), handler1, (width - 240) / 2, (height - 30) / 2 - 130);
 
     GtkWidget *bus_ticket_number = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(bus_ticket_number), "PLEASE ENTER TICKET NUMBER");
     gtk_widget_set_size_request(bus_ticket_number, 240, 50);
     gtk_entry_set_max_length(GTK_ENTRY(bus_ticket_number), 3);
     g_signal_connect(bus_ticket_number, "insert-text", G_CALLBACK(entry_insert_text), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), bus_ticket_number, (width - 240) / 2, (height - 30) / 2 - 150);
-
-    GtkWidget *handler2 = gtk_label_new("ENTER PASSENGER'S NAME:");
-    cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 13pt; }", -1, NULL);
-    styleContext = gtk_widget_get_style_context(handler2);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), handler2, (width - 240) / 2, (height - 30) / 2 - 80);
-
-    GtkWidget *usernamedetail = gtk_entry_new();
-    gtk_entry_set_placeholder_text(GTK_ENTRY(usernamedetail), "PLEASE ENTER PASSENGER'S NAME");
-    gtk_widget_set_size_request(usernamedetail, 240, 50);
-    gtk_fixed_put(GTK_FIXED(fixed), usernamedetail, (width - 240) / 2, (height - 30) / 2 - 50);
+    gtk_fixed_put(GTK_FIXED(fixed), bus_ticket_number, (width - 240) / 2, (height - 30) / 2 - 100);
 
     GtkWidget *handler3 = gtk_label_new("ENTER PASSENGER'S PHONE NUMBER:");
     cssProvider = gtk_css_provider_new();
     gtk_css_provider_load_from_data(cssProvider, "label { font-size: 11pt; }", -1, NULL);
     styleContext = gtk_widget_get_style_context(handler3);
     gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), handler3, (width - 240) / 2 - 20, (height - 30) / 2 + 20);
+    gtk_fixed_put(GTK_FIXED(fixed), handler3, (width - 240) / 2 - 20, (height - 30) / 2 - 30);
 
     GtkWidget *userphnumber = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(userphnumber), "PLEASE ENTER PASSENGER'S PHONE NUMBER");
     gtk_widget_set_size_request(userphnumber, 300, 50);
     gtk_entry_set_max_length(GTK_ENTRY(userphnumber), 10);
     g_signal_connect(userphnumber, "insert-text", G_CALLBACK(entry_insert_text), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), userphnumber, (width - 300) / 2, (height - 30) / 2 + 50);
+    gtk_fixed_put(GTK_FIXED(fixed), userphnumber, (width - 300) / 2, (height - 30) / 2);
 
     GtkWidget *book_button = gtk_button_new_with_label("BOOK NOW");
     gtk_widget_set_size_request(book_button, 100, 40);
     g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
-    g_object_set_data(G_OBJECT(book_button), "usernamedetail", usernamedetail);
     g_object_set_data(G_OBJECT(book_button), "userphnumber", userphnumber);
     g_object_set_data(G_OBJECT(book_button), "message", message);
-    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 100) / 2 - 10, (height - 10) / 2 + 100);
+    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 100) / 2 - 10, (height - 10) / 2 + 50);
     g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
-    g_signal_connect(book_button, "clicked", G_CALLBACK(returnNumberTicket), (gpointer)lcid);
+    g_signal_connect(book_button, "clicked", G_CALLBACK(CancelNumberTicket), NULL);
 
     int totalseat = seat;
     int tems = totalseat;
@@ -810,37 +789,28 @@ void listBUSTicket(int seat, char lcid[])
     gtk_widget_show_all(window);
 }
 
-void returnNumberTicket(GtkWidget *button, gpointer data)
+void CancelNumberTicket(GtkWidget *button, gpointer data)
 {
     GtkWidget *busTicketNumber = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "bus_ticket_number"));
-    GtkWidget *usernamedetail = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "usernamedetail"));
     GtkWidget *userphnumber = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "userphnumber"));
 
     GtkWidget *message = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "message"));
 
     const gchar *ticket = gtk_entry_get_text(GTK_ENTRY(busTicketNumber));
-    const gchar *username = gtk_entry_get_text(GTK_ENTRY(usernamedetail));
     const gchar *userph = gtk_entry_get_text(GTK_ENTRY(userphnumber));
 
-    if (strcmp(ticket, "") == 0 || strcmp(username, "") == 0 || strcmp(userph, "") == 0)
+    if (strcmp(ticket, "") == 0 || strcmp(userph, "") == 0)
     {
         gtk_label_set_text(GTK_LABEL(message), "PLEASE ENETERED ALL THE REQUIRED INFORMATIONS");
     }
     else
     {
         int busTicketNum;
-        int len = strlen(username);
-        char passengerName[len];
-        len = strlen(userph);
+        int len = strlen(userph);
         char passengerPhoneNumber[len];
         busTicketNum = atoi(ticket);
-        strcpy(passengerName, username);
         strcpy(passengerPhoneNumber, userph);
-        char BSL[] = ".files/BusSeatLicense", chkli[500], boBus[1000], unboBus[1000], usrinfo[1000], usrph[1000];
-        sprintf(boBus, ".files/Booked-%s", lid);
-        sprintf(unboBus, ".files/UnBooked-%s", lid);
-        sprintf(usrinfo, ".files/UserInfo-%s", lid);
-        sprintf(usrph, ".files/UserInfoPhone-%s", lid);
+        char BSL[] = ".files/BusSeatLicense", chkli[500];
         int seatnum;
         FILE *chk = fopen(BSL, "r");
         while (fscanf(chk, "%d %s ", &totalSeat, chkli) == 2)
@@ -861,6 +831,8 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
         }
         else if (strcmp(lid, chkli) == 0)
         {
+            char boBus[1000];
+            sprintf(boBus, ".files/Booked-%s", lid);
             FILE *chk2 = fopen(boBus, "r");
             while (fscanf(chk2, "%d ", &seatnum) == 1)
             {
@@ -872,36 +844,97 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
             fclose(chk2);
             if (seatnum == busTicketNum)
             {
-                gtk_label_set_text(GTK_LABEL(message), "IS ALREDAY BOOKED!");
+                char unboBus[1000], usrinfo[1000], usrph[1000];
+                char busName[1000], urph[200], li[500], usinfo[1000];
+                int st;
+                FILE *fp, *fp1;
+                fp = fopen(".files/buslist", "r");
+                fp1 = fopen(".files/BusSeatLicense", "r");
+                while (fscanf(fp1, "%d %s ", &st, li) == 2 && fgets(busName, 200, fp) != NULL)
+                {
+                    if (strcmp(lid, li) == 0)
+                    {
+                        break;
+                    }
+                }
+                fclose(fp);
+                fclose(fp1);
+                if (strcmp(lid, li) == 0)
+                {
+                    sprintf(boBus, ".files/Booked-%s", lid);
+                    sprintf(unboBus, ".files/UnBooked-%s", lid);
+                    sprintf(usrinfo, ".files/UserInfo-%s", lid);
+                    sprintf(usrph, ".files/UserInfoPhone-%s", lid);
+                    int seatNum;
+                    FILE *fp2, *fp3, *fp4, *fp5, *fp6;
+                    fp2 = fopen(".files/buslist", "r");
+                    fp3 = fopen(".files/BusSeatLicense", "r");
+                    fp4 = fopen(usrinfo, "r");
+                    fp5 = fopen(usrph, "r");
+                    fp6 = fopen(boBus, "r");
+                    while (fscanf(fp3, "%d %s ", &st, li) == 2 && fgets(busName, 1000, fp2) != NULL && fgets(usinfo, 1000, fp4) != NULL && fscanf(fp5, "%s ", urph) == 1 && fscanf(fp6, "%d ", &seatNum) == 1)
+                    {
+                        if (strcmp(lid, li) == 0)
+                        {
+                            break;
+                        }
+                    }
+                    fclose(fp2);
+                    fclose(fp3);
+                    fclose(fp4);
+                    fclose(fp5);
+                    fclose(fp6);
+                    if (strcmp(lid, li) == 0 && strcmp(urph, passengerPhoneNumber) == 0)
+                    {
+                        int tempseat;
+                        char tempuinfo[1000], tempuph[1000];
+                        FILE *bok, *uin, *uph, *temp1, *temp2, *temp3;
+                        bok = fopen(boBus, "r");
+                        uin = fopen(usrinfo, "r");
+                        uph = fopen(usrph, "r");
+                        temp1 = fopen(".files/temp1", "a");
+                        temp2 = fopen(".files/temp2", "a");
+                        temp3 = fopen(".files/temp3", "a");
+                        while (fscanf(bok, "%d ", &tempseat) == 1 && fgets(tempuinfo, 1000, uin) != NULL && fscanf(uph, "%s ", tempuph) == 1)
+                        {
+                            if (strcmp(tempuinfo, usinfo) == 0 && strcmp(tempuph, passengerPhoneNumber) == 0 && tempseat == busTicketNum)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                fprintf(temp1, "%d ", tempseat);
+                                fprintf(temp2, "%s\n", tempuinfo);
+                                fprintf(temp3, "%s ", tempuph);
+                            }
+                        }
+                        fclose(bok);
+                        fclose(uin);
+                        fclose(uph);
+                        fclose(temp1);
+                        fclose(temp2);
+                        fclose(temp3);
+                        remove(boBus);
+                        remove(usrinfo);
+                        remove(usrph);
+                        rename(".files/temp1", boBus);
+                        rename(".files/temp2",usrinfo);
+                        rename(".files/temp3",usrph);
+                        FILE *append = fopen(unboBus,"a");
+                        fprintf(append,"%d ",busTicketNum);
+                        fclose(append);
+                        gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
+                        g_timeout_add(500, delayME, NULL);
+                    }
+                    else if (strcmp(urph, passengerPhoneNumber) != 0)
+                    {
+                        gtk_label_set_text(GTK_LABEL(message), "PHONE NUMBER DOES NOT MATCH!");
+                    }
+                }
             }
             else
             {
-                int tempseat;
-                FILE *booked, *unBooked, *USRinfo, *USRph, *temp;
-                booked = fopen(boBus, "a");
-                unBooked = fopen(unboBus, "r");
-                USRinfo = fopen(usrinfo, "a");
-                USRph = fopen(usrph, "a");
-                temp = fopen(".files/temp", "a");
-                fprintf(USRinfo, "%s\n", passengerName);
-                fclose(USRinfo);
-                fprintf(USRph, "%s ", passengerPhoneNumber);
-                fclose(USRph);
-                fprintf(booked, "%d ", busTicketNum);
-                fclose(booked);
-                while (fscanf(unBooked, "%d ", &tempseat) == 1)
-                {
-                    if (tempseat != busTicketNum)
-                    {
-                        fprintf(temp, "%d ", tempseat);
-                    }
-                }
-                fclose(unBooked);
-                fclose(temp);
-                remove(unboBus);
-                rename(".files/temp", unboBus);
-                gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
-                g_timeout_add(500, delay, NULL);
+                gtk_label_set_text(GTK_LABEL(message), "HAS NOT BEEN BOOKED!");
             }
         }
         else

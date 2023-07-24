@@ -34,6 +34,8 @@ void removeUser();
 
 void removeBus();
 
+void cancelTicket();
+
 int width = 1366, height = 768;
 
 char entered_username[20], entered_password[20];
@@ -136,6 +138,12 @@ void entry_insert_text(GtkEntry *entry, gchar *new_text, gint new_text_length, g
 }
 
 int addDelay(gpointer data)
+{
+    adminpannel();
+    return 0;
+}
+
+int addDelayUser(gpointer data)
 {
     adminpannel();
     return 0;
