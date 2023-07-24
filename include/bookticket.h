@@ -9,8 +9,8 @@ int chkarr(int arr[], int n, int pp)
     }
     return 0;
 }
-int ticketNumber;
-void returnNumberTicket(GtkWidget *button);
+char lid[500];
+void returnNumberTicket(GtkWidget *button,gpointer data);
 void book_ticket_system(GtkWidget *button);
 void listBUSTicket();
 void bookTicket()
@@ -129,14 +129,21 @@ void bookTicket()
         fclose(ticketbo);
         fclose(license);
 
+        GtkWidget *handler = gtk_label_new("ENTER BUS LIST ID OR LICENSE ID:");
+        GtkCssProvider *cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 14pt; }", -1, NULL);
+        GtkStyleContext *styleContext = gtk_widget_get_style_context(handler);
+        gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_fixed_put(GTK_FIXED(fixed), handler, (width - 240) / 2 - 30, (height - 30) / 2 - 80);
+
         GtkWidget *busid = gtk_entry_new();
         gtk_entry_set_placeholder_text(GTK_ENTRY(busid), "PLEASE ENTER LIST ID OR LICENSE ID");
         gtk_widget_set_size_request(busid, 270, 50);
-        gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 270) / 2, (height - 50) / 2);
+        gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 270) / 2, (height - 50) / 2 - 30);
 
         GtkWidget *book = gtk_button_new_with_label("GO TO BOOKING PORTAL");
         gtk_widget_set_size_request(book, 200, 50);
-        gtk_fixed_put(GTK_FIXED(fixed), book, (width - 200) / 2, (height - 50) / 2 + 50);
+        gtk_fixed_put(GTK_FIXED(fixed), book, (width - 200) / 2, (height - 50) / 2 + 30);
         g_object_set_data(G_OBJECT(book), "busid", busid);
         g_object_set_data(G_OBJECT(book), "message", message);
         g_signal_connect(book, "clicked", G_CALLBACK(book_ticket_system), NULL);
@@ -250,6 +257,7 @@ void book_ticket_system(GtkWidget *button)
 void listBUSTicket(int seat, char lcid[])
 {
     clearmywindow();
+    strcpy(lid,lcid);
 
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
@@ -269,27 +277,61 @@ void listBUSTicket(int seat, char lcid[])
     GtkWidget *label;
 
     GtkWidget *message = gtk_label_new(NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), message, (width - 110) / 2, (height - 10) / 2 + 100);
+    gtk_fixed_put(GTK_FIXED(fixed), message, (width - 110) / 2, (height - 10) / 2 + 150);
 
     label = gtk_label_new("  BUS TICKETS THAT\nARE BOOKED ARE RED");
     gtk_fixed_put(GTK_FIXED(fixed), label, 1200, 260);
+
+    GtkWidget *handler1 = gtk_label_new("ENTER TICKET NUMBER:");
+    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 14pt; }", -1, NULL);
+    GtkStyleContext *styleContext = gtk_widget_get_style_context(handler1);
+    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_fixed_put(GTK_FIXED(fixed), handler1, (width - 240) / 2, (height - 30) / 2 - 180);
 
     GtkWidget *bus_ticket_number = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(bus_ticket_number), "PLEASE ENTER TICKET NUMBER");
     gtk_widget_set_size_request(bus_ticket_number, 240, 50);
     gtk_entry_set_max_length(GTK_ENTRY(bus_ticket_number), 3);
     g_signal_connect(bus_ticket_number, "insert-text", G_CALLBACK(entry_insert_text), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed), bus_ticket_number, (width - 240) / 2, (height - 30) / 2);
+    gtk_fixed_put(GTK_FIXED(fixed), bus_ticket_number, (width - 240) / 2, (height - 30) / 2 - 150);
+
+    GtkWidget *handler2 = gtk_label_new("ENTER PASSENGER'S NAME:");
+    cssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 13pt; }", -1, NULL);
+    styleContext = gtk_widget_get_style_context(handler2);
+    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_fixed_put(GTK_FIXED(fixed), handler2, (width - 240) / 2, (height - 30) / 2 - 80);
+
+    GtkWidget *usernamedetail = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(usernamedetail), "PLEASE ENTER PASSENGER'S NAME");
+    gtk_widget_set_size_request(usernamedetail, 240, 50);
+    gtk_fixed_put(GTK_FIXED(fixed), usernamedetail, (width - 240) / 2, (height - 30) / 2 - 50);
+
+    GtkWidget *handler3 = gtk_label_new("ENTER PASSENGER'S PHONE NUMBER:");
+    cssProvider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 11pt; }", -1, NULL);
+    styleContext = gtk_widget_get_style_context(handler3);
+    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    gtk_fixed_put(GTK_FIXED(fixed), handler3, (width - 240) / 2 - 20, (height - 30) / 2 + 20);
+
+    GtkWidget *userphnumber = gtk_entry_new();
+    gtk_entry_set_placeholder_text(GTK_ENTRY(userphnumber), "PLEASE ENTER PASSENGER'S PHONE NUMBER");
+    gtk_widget_set_size_request(userphnumber, 300, 50);
+    gtk_entry_set_max_length(GTK_ENTRY(userphnumber), 10);
+    g_signal_connect(userphnumber, "insert-text", G_CALLBACK(entry_insert_text), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), userphnumber, (width - 300) / 2, (height - 30) / 2 + 50);
 
 
     GtkWidget *book_button = gtk_button_new_with_label("BOOK NOW");
     gtk_widget_set_size_request(book_button, 100, 40);
     g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
+    g_object_set_data(G_OBJECT(book_button), "usernamedetail", usernamedetail);
+    g_object_set_data(G_OBJECT(book_button), "userphnumber", userphnumber);
     g_object_set_data(G_OBJECT(book_button), "message", message);
-    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 110) / 2, (height - 10) / 2 + 50);
+    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 100) / 2 - 10, (height - 10) / 2 + 100);
     g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
-    g_signal_connect(book_button, "clicked", G_CALLBACK(returnNumberTicket), NULL);
-
+    g_signal_connect(book_button, "clicked", G_CALLBACK(returnNumberTicket), (gpointer)lcid);
 
     int totalseat = seat;
     int tems = totalseat;
@@ -732,7 +774,7 @@ void listBUSTicket(int seat, char lcid[])
             p++;
         }
     }
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    cssProvider = gtk_css_provider_new();
     GError *error = NULL;
     gtk_css_provider_load_from_data(cssProvider, ".red-label { color: red; }", -1, &error);
     if (error != NULL)
@@ -745,15 +787,32 @@ void listBUSTicket(int seat, char lcid[])
     gtk_widget_show_all(window);
 }
 
-void returnNumberTicket(GtkWidget *button)
+void returnNumberTicket(GtkWidget *button, gpointer data)
 {
     GtkWidget *busTicketNumber = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "bus_ticket_number"));
+    GtkWidget *usernamedetail = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "usernamedetail"));
+    GtkWidget *userphnumber = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "userphnumber"));
 
     GtkWidget *message = GTK_WIDGET(g_object_get_data(G_OBJECT(button), "message"));
 
     const gchar *ticket = gtk_entry_get_text(GTK_ENTRY(busTicketNumber));
+    const gchar *username = gtk_entry_get_text(GTK_ENTRY(usernamedetail));
+    const gchar *userph = gtk_entry_get_text(GTK_ENTRY(userphnumber));
 
-    // gtk_label_set_text(GTK_LABEL(message),"I LOVE THIALAND");
-
-    ticketNumber = atoi(ticket);
+    if (strcmp(ticket, "") == 0 || strcmp(username, "") == 0 || strcmp(userph, "") == 0)
+    {
+        gtk_label_set_text(GTK_LABEL(message), "PLEASE ENETERED ALL THE REQUIRED INFORMATIONS");
+    }
+    else
+    {
+        int busTicketNum;
+        int len = strlen(username);
+        char passengerName[len];
+        len = strlen(userph);
+        char passengerPhoneNumber[len];
+        busTicketNum = atoi(ticket);
+        strcpy(passengerName, username);
+        strcpy(passengerPhoneNumber, userph);
+        
+    }
 }

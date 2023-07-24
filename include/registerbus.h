@@ -75,7 +75,7 @@ void bus_register(GtkWidget *button, gpointer user_data)
 
     char busName[500], licenseNumber[200], chklis[200];
     strcpy(busName, busname);
-    char boBus[1000], unboBus[1000], usrinfo[1000];
+    char boBus[1000], unboBus[1000], usrinfo[1000],usrph[1000];
     strcpy(licenseNumber, busRegisterNumber);
     int totalSeat = atoi(total_seat);
     int len = strlen(licenseNumber), space = 0, seet;
@@ -142,7 +142,8 @@ void bus_register(GtkWidget *button, gpointer user_data)
                 sprintf(boBus, ".files/Booked-%s", licenseNumber);
                 sprintf(unboBus, ".files/UnBooked-%s", licenseNumber);
                 sprintf(usrinfo, ".files/UserInfo-%s", licenseNumber);
-                FILE *make1, *make2, *make3, *make4, *make5;
+                sprintf(usrph, ".files/UserInfoPhone-%s", licenseNumber);
+                FILE *make1, *make2, *make3, *make4, *make5, *make6;
                 make5 = fopen(".files/buslist", "a");
                 fprintf(make5, "%s\n", busName);
                 make1 = fopen(".files/BusSeatLicense", "a");
@@ -150,10 +151,12 @@ void bus_register(GtkWidget *button, gpointer user_data)
                 make2 = fopen(boBus, "a");
                 make3 = fopen(usrinfo, "a");
                 make4 = fopen(unboBus, "a");
+                make6 = fopen(usrph,"a");
                 for (int i = 1; i <= totalSeat; i++)
                 {
                     fprintf(make4, "%d ", i);
                 }
+                fclose(make6);
                 fclose(make5);
                 fclose(make4);
                 fclose(make3);
