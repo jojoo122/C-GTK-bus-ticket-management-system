@@ -68,7 +68,7 @@ void user_register(GtkWidget *button, gpointer user_data)
         if (userregister() == 1)
         {
             gtk_label_set_text(GTK_LABEL(registrationsuccess), "SUCCESSFULLY REGISTERED!");
-            adminpannel();
+            g_timeout_add(500, addDelay, NULL);
         }
         else if (userregister() == -1)
         {

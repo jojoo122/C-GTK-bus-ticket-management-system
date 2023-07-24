@@ -10,8 +10,6 @@ void registerBus();
 
 void userpannel();
 
-void removeBus();
-
 void bookTicket();
 
 void adminpannel();
@@ -33,6 +31,8 @@ int loginCheckUser();
 void registerUser();
 
 void removeUser();
+
+void removeBus();
 
 int width = 1366, height = 768;
 
@@ -133,4 +133,10 @@ void entry_insert_text(GtkEntry *entry, gchar *new_text, gint new_text_length, g
     {
         g_signal_stop_emission_by_name(entry, "insert-text");
     }
+}
+
+int addDelay(gpointer data)
+{
+    adminpannel();
+    return 0;
 }

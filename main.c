@@ -11,9 +11,9 @@
 #include "include/removeuser.h"
 #include "include/listusers.h"
 #include "include/landing.h"
+#include "include/removebus.h"
 #include "include/bookticket.h"
 #include "include/registerbus.h"
-#include "include/removebus.h"
 int main(int argc, char **argv)
 {
     oslist();

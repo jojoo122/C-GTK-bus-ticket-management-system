@@ -164,7 +164,7 @@ void bus_register(GtkWidget *button, gpointer user_data)
                 fclose(make1);
                 gtk_label_set_text(GTK_LABEL(registrationsuccess), "REGISTRATION SUCCESSFULL!");
                 gtk_label_set_text(GTK_LABEL(longmessage), NULL);
-                adminpannel();
+                g_timeout_add(500, addDelay, NULL);
             }
         }
     }

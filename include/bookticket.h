@@ -18,7 +18,6 @@ void bookTicket()
     clearmywindow();
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
-    g_signal_connect(GTK_WINDOW(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
     if (iden == 1)
     {
         showLEV2("admin");
@@ -267,6 +266,7 @@ void book_ticket_system(GtkWidget *button)
 int delay(gpointer data)
 {
     listBUSTicket(totalSeat, lid);
+    return 0;
 }
 void listBUSTicket(int seat, char lcid[])
 {

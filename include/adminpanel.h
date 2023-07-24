@@ -17,7 +17,7 @@ void adminpannel()
 
     GtkWidget *deregisterbus = gtk_button_new_with_label("REMOVE A BUS");
     gtk_widget_set_size_request(deregisterbus, 400, 50);
-    // g_signal_connect(deregisterbus, "clicked", G_CALLBACK(deRegisterBus), NULL);
+    g_signal_connect(deregisterbus, "clicked", G_CALLBACK(removeBus), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),deregisterbus,(width-400)/2-250,(height/2)-200);
     
     GtkWidget *bookticket = gtk_button_new_with_label("BOOK A TICKET");
