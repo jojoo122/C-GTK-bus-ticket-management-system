@@ -238,7 +238,7 @@ void remove_bus_system(GtkWidget *button)
             fclose(fptr1);
             if (strcmp(lsId, busid) == 0)
             {
-                remove_bus(lsId);
+                remove_bus(lsid);
                 gtk_label_set_text(GTK_LABEL(message), "SUCCESSFULLY REMOVED!");
                 g_timeout_add(500, addDelay, NULL);
             }
