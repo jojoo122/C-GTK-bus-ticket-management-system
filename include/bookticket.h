@@ -10,7 +10,7 @@ int chkarr(int arr[], int n, int pp)
     return 0;
 }
 char lid[500];
-void returnNumberTicket(GtkWidget *button,gpointer data);
+void returnNumberTicket(GtkWidget *button, gpointer data);
 void book_ticket_system(GtkWidget *button);
 void listBUSTicket();
 void bookTicket()
@@ -257,7 +257,7 @@ void book_ticket_system(GtkWidget *button)
 void listBUSTicket(int seat, char lcid[])
 {
     clearmywindow();
-    strcpy(lid,lcid);
+    strcpy(lid, lcid);
 
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
@@ -321,7 +321,6 @@ void listBUSTicket(int seat, char lcid[])
     gtk_entry_set_max_length(GTK_ENTRY(userphnumber), 10);
     g_signal_connect(userphnumber, "insert-text", G_CALLBACK(entry_insert_text), NULL);
     gtk_fixed_put(GTK_FIXED(fixed), userphnumber, (width - 300) / 2, (height - 30) / 2 + 50);
-
 
     GtkWidget *book_button = gtk_button_new_with_label("BOOK NOW");
     gtk_widget_set_size_request(book_button, 100, 40);
@@ -813,6 +812,20 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
         busTicketNum = atoi(ticket);
         strcpy(passengerName, username);
         strcpy(passengerPhoneNumber, userph);
-        
+        char BSL[] = ".files/BusSeatLicense", chkli[500];
+        int totalSeat;
+        FILE *chk = fopen(BSL, "r");
+        while (fscanf(chk, "%d %s ", &totalSeat, chkli) == 2)
+        {
+            if (strcmp(lid, chkli) == 0)
+            {
+                break;
+            }
+        }
+        fclose(chk);
+        if (strcmp(lid, chkli) == 0)
+        {
+            gtk_label_set_text(GTK_LABEL(message),"SUCCESS!");
+        }
     }
 }
