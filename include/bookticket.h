@@ -193,6 +193,13 @@ void book_ticket_system(GtkWidget *button)
             int elistnum = atoi(busId);
             int seat, listnum = 1;
             char lsid[200];
+            count = 0;
+            FILE *fptrr = fopen(".files/BusSeatLicense", "r");
+            while (fscanf(fptrr, "%d %s ", &seat, lsid) == 2)
+            {
+                ++count;
+            }
+            fclose(fptrr);
             FILE *fptr = fopen(".files/BusSeatLicense", "r");
             while (fscanf(fptr, "%d %s ", &seat, lsid) == 2)
             {
@@ -200,7 +207,10 @@ void book_ticket_system(GtkWidget *button)
                 {
                     break;
                 }
-                listnum++;
+                if (listnum < count)
+                {
+                    ++listnum;
+                }
             }
             if (listnum != elistnum)
             {
@@ -812,8 +822,10 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
         busTicketNum = atoi(ticket);
         strcpy(passengerName, username);
         strcpy(passengerPhoneNumber, userph);
-        char BSL[] = ".files/BusSeatLicense", chkli[500];
-        int totalSeat;
+        char BSL[] = ".files/BusSeatLicense", chkli[500], boBus[1000], unboBus[1000];
+        sprintf(boBus, ".files/Booked-%s", lid);
+        sprintf(unboBus, ".files/UnBooked-%s", lid);
+        int totalSeat, seatnum;
         FILE *chk = fopen(BSL, "r");
         while (fscanf(chk, "%d %s ", &totalSeat, chkli) == 2)
         {
@@ -823,9 +835,34 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
             }
         }
         fclose(chk);
-        if (strcmp(lid, chkli) == 0)
+        if (totalSeat < busTicketNum)
         {
-            gtk_label_set_text(GTK_LABEL(message),"SUCCESS!");
+            gtk_label_set_text(GTK_LABEL(message), "INVALID SEAT NUMBER!");
+        }
+        else if (strcmp(lid, chkli) == 0)
+        {
+            FILE *chk2 = fopen(boBus, "r");
+            while (fscanf(chk2, "%d ", &seatnum) == 1)
+            {
+                if (seatnum == busTicketNum)
+                {
+                    break;
+                }
+            }
+            fclose(chk2);
+            if (seatnum == busTicketNum)
+            {
+                gtk_label_set_text(GTK_LABEL(message), "IS ALREDAY BOOKED!");
+            }
+            else
+            {
+                
+                gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
+            }
+        }
+        else
+        {
+            gtk_label_set_text(GTK_LABEL(message), "UNSUCCESS!");
         }
     }
 }
