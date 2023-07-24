@@ -10,6 +10,8 @@ void registerBus();
 
 void userpannel();
 
+void removeBus();
+
 void bookTicket();
 
 void adminpannel();

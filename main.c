@@ -13,6 +13,7 @@
 #include "include/landing.h"
 #include "include/bookticket.h"
 #include "include/registerbus.h"
+#include "include/removebus.h"
 int main(int argc, char **argv)
 {
     oslist();

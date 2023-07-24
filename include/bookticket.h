@@ -9,7 +9,7 @@ int chkarr(int arr[], int n, int pp)
     }
     return 0;
 }
-char lid[500];
+char lid[500]; int totalSeat;
 void returnNumberTicket(GtkWidget *button, gpointer data);
 void book_ticket_system(GtkWidget *button);
 void listBUSTicket();
@@ -263,6 +263,10 @@ void book_ticket_system(GtkWidget *button)
             }
         }
     }
+}
+int delay(gpointer data)
+{
+    listBUSTicket(totalSeat, lid);
 }
 void listBUSTicket(int seat, char lcid[])
 {
@@ -827,7 +831,7 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
         sprintf(unboBus, ".files/UnBooked-%s", lid);
         sprintf(usrinfo, ".files/UserInfo-%s", lid);
         sprintf(usrph, ".files/UserInfoPhone-%s", lid);
-        int totalSeat, seatnum;
+        int seatnum;
         FILE *chk = fopen(BSL, "r");
         while (fscanf(chk, "%d %s ", &totalSeat, chkli) == 2)
         {
@@ -860,30 +864,30 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
             {
                 int tempseat;
                 FILE *booked, *unBooked, *USRinfo, *USRph, *temp;
-                booked = fopen(boBus,"a");
-                unBooked = fopen(unboBus,"r");
-                USRinfo = fopen(usrinfo,"a");
-                USRph = fopen(usrph,"a");
-                temp = fopen(".files/temp","a");
-                fprintf(USRinfo,"%s\n",passengerName);                
+                booked = fopen(boBus, "a");
+                unBooked = fopen(unboBus, "r");
+                USRinfo = fopen(usrinfo, "a");
+                USRph = fopen(usrph, "a");
+                temp = fopen(".files/temp", "a");
+                fprintf(USRinfo, "%s\n", passengerName);
                 fclose(USRinfo);
-                fprintf(USRph,"%s ",passengerPhoneNumber);
+                fprintf(USRph, "%s ", passengerPhoneNumber);
                 fclose(USRph);
-                fprintf(booked,"%d ",busTicketNum);
+                fprintf(booked, "%d ", busTicketNum);
                 fclose(booked);
-                while(fscanf(unBooked,"%d ",&tempseat) == 1)
+                while (fscanf(unBooked, "%d ", &tempseat) == 1)
                 {
-                    if(tempseat != busTicketNum)
+                    if (tempseat != busTicketNum)
                     {
-                        fprintf(temp,"%d ",tempseat);
+                        fprintf(temp, "%d ", tempseat);
                     }
                 }
                 fclose(unBooked);
                 fclose(temp);
                 remove(unboBus);
-                rename(".files/temp",unboBus);
+                rename(".files/temp", unboBus);
                 gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
-                bookTicket();
+                g_timeout_add(500, delay, NULL);
             }
         }
         else
