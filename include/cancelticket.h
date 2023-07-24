@@ -281,7 +281,7 @@ void listBUSTicketCancel(int seat, char lcid[])
     showHF();
 
     GtkWidget *goback = gtk_button_new_with_label("GO BACK");
-    g_signal_connect(goback, "clicked", G_CALLBACK(bookTicket), NULL);
+    g_signal_connect(goback, "clicked", G_CALLBACK(cancelTicket), NULL);
     gtk_fixed_put(GTK_FIXED(fixed), goback, 5, 5);
     GtkWidget *exit = gtk_button_new_with_label("EXIT");
     g_signal_connect(exit, "clicked", G_CALLBACK(gtk_main_quit), NULL);

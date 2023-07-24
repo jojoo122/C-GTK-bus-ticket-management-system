@@ -15,6 +15,7 @@
 #include "include/bookticket.h"
 #include "include/registerbus.h"
 #include "include/cancelticket.h"
+#include "include/listBookedTicketDetails.h"
 int main(int argc, char **argv)
 {
     oslist();

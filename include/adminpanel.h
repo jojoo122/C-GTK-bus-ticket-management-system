@@ -47,7 +47,7 @@ void adminpannel()
 
     GtkWidget *bookedticketdetails = gtk_button_new_with_label("LIST BOOKED TICKET DETAILS");
     gtk_widget_set_size_request(bookedticketdetails, 400, 50);
-    // g_signal_connect(bookedticketdetails, "clicked", G_CALLBACK(BookedTicketDetails), NULL);
+    g_signal_connect(bookedticketdetails, "clicked", G_CALLBACK(listDetail), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),bookedticketdetails,(width-400)/2+250,(height/2));
     
     gtk_widget_show_all(window);
