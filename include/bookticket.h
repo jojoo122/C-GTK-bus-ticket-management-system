@@ -841,7 +841,7 @@ void returnNumberTicket(GtkWidget *button, gpointer data)
             }
         }
         fclose(chk);
-        if (totalSeat < busTicketNum)
+        if (totalSeat < busTicketNum || busTicketNum == 0)
         {
             gtk_label_set_text(GTK_LABEL(message), "INVALID SEAT NUMBER!");
         }
