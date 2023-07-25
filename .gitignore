@@ -4,3 +4,4 @@ main
 .files
 .vscode
 temp.c
+.gitignore
