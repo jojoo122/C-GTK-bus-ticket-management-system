@@ -3,6 +3,7 @@ void firstlanding()
     clearmywindow();
     fixed = gtk_fixed_new();
     gtk_container_add(GTK_CONTAINER(window), fixed);
+    g_signal_connect(GTK_WINDOW(window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
     GtkWidget *registrationsuccess = gtk_label_new(NULL);
 
