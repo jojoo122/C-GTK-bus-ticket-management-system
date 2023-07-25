@@ -326,14 +326,14 @@ void listBUSTicketCancel(int seat, char lcid[])
     g_signal_connect(userphnumber, "insert-text", G_CALLBACK(entry_insert_text), NULL);
     gtk_fixed_put(GTK_FIXED(fixed), userphnumber, (width - 300) / 2, (height - 30) / 2);
 
-    GtkWidget *book_button = gtk_button_new_with_label("BOOK NOW");
-    gtk_widget_set_size_request(book_button, 100, 40);
-    g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
-    g_object_set_data(G_OBJECT(book_button), "userphnumber", userphnumber);
-    g_object_set_data(G_OBJECT(book_button), "message", message);
-    gtk_fixed_put(GTK_FIXED(fixed), book_button, (width - 100) / 2 - 10, (height - 10) / 2 + 50);
-    g_object_set_data(G_OBJECT(book_button), "bus_ticket_number", bus_ticket_number);
-    g_signal_connect(book_button, "clicked", G_CALLBACK(CancelNumberTicket), NULL);
+    GtkWidget *cancel_button = gtk_button_new_with_label("CANCEL NOW");
+    gtk_widget_set_size_request(cancel_button, 100, 40);
+    g_object_set_data(G_OBJECT(cancel_button), "bus_ticket_number", bus_ticket_number);
+    g_object_set_data(G_OBJECT(cancel_button), "userphnumber", userphnumber);
+    g_object_set_data(G_OBJECT(cancel_button), "message", message);
+    gtk_fixed_put(GTK_FIXED(fixed), cancel_button, (width - 100) / 2 - 10, (height - 10) / 2 + 50);
+    g_object_set_data(G_OBJECT(cancel_button), "bus_ticket_number", bus_ticket_number);
+    g_signal_connect(cancel_button, "clicked", G_CALLBACK(CancelNumberTicket), NULL);
 
     int totalseat = seat;
     int tems = totalseat;
@@ -884,51 +884,68 @@ void CancelNumberTicket(GtkWidget *button, gpointer data)
                     fclose(fp4);
                     fclose(fp5);
                     fclose(fp6);
-                    if (strcmp(lid, li) == 0 && strcmp(urph, passengerPhoneNumber) == 0)
+                    if (strcmp(lid, li) == 0)
                     {
-                        int tempseat;
-                        char tempuinfo[1000], tempuph[1000];
-                        FILE *bok, *uin, *uph, *temp1, *temp2, *temp3;
-                        bok = fopen(boBus, "r");
-                        uin = fopen(usrinfo, "r");
-                        uph = fopen(usrph, "r");
-                        temp1 = fopen(".files/temp1", "a");
-                        temp2 = fopen(".files/temp2", "a");
-                        temp3 = fopen(".files/temp3", "a");
-                        while (fscanf(bok, "%d ", &tempseat) == 1 && fgets(tempuinfo, 1000, uin) != NULL && fscanf(uph, "%s ", tempuph) == 1)
+                        FILE *fp7, *fp8, *fp9;
+                        fp7 = fopen(usrinfo, "r");
+                        fp8 = fopen(usrph, "r");
+                        fp9 = fopen(boBus, "r");
+                        while (fgets(usinfo, 1000, fp7) != NULL && fscanf(fp8, "%s ", urph) == 1 && fscanf(fp9, "%d ", &seatNum) == 1)
                         {
-                            if (strcmp(tempuinfo, usinfo) == 0 && strcmp(tempuph, passengerPhoneNumber) == 0 && tempseat == busTicketNum)
+                            if (strcmp(urph, passengerPhoneNumber) == 0)
                             {
-                                continue;
-                            }
-                            else
-                            {
-                                fprintf(temp1, "%d ", tempseat);
-                                fprintf(temp2, "%s\n", tempuinfo);
-                                fprintf(temp3, "%s ", tempuph);
+                                break;
                             }
                         }
-                        fclose(bok);
-                        fclose(uin);
-                        fclose(uph);
-                        fclose(temp1);
-                        fclose(temp2);
-                        fclose(temp3);
-                        remove(boBus);
-                        remove(usrinfo);
-                        remove(usrph);
-                        rename(".files/temp1", boBus);
-                        rename(".files/temp2",usrinfo);
-                        rename(".files/temp3",usrph);
-                        FILE *append = fopen(unboBus,"a");
-                        fprintf(append,"%d ",busTicketNum);
-                        fclose(append);
-                        gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
-                        g_timeout_add(500, delayME, NULL);
-                    }
-                    else if (strcmp(urph, passengerPhoneNumber) != 0)
-                    {
-                        gtk_label_set_text(GTK_LABEL(message), "PHONE NUMBER DOES NOT MATCH!");
+                        fclose(fp7);
+                        fclose(fp8);
+                        fclose(fp9);
+                        if (strcmp(urph, passengerPhoneNumber) == 0)
+                        {
+                            int tempseat;
+                            char tempuinfo[1000], tempuph[1000];
+                            FILE *bok, *uin, *uph, *temp1, *temp2, *temp3;
+                            bok = fopen(boBus, "r");
+                            uin = fopen(usrinfo, "r");
+                            uph = fopen(usrph, "r");
+                            temp1 = fopen(".files/temp1", "a");
+                            temp2 = fopen(".files/temp2", "a");
+                            temp3 = fopen(".files/temp3", "a");
+                            while (fscanf(bok, "%d ", &tempseat) == 1 && fgets(tempuinfo, 1000, uin) != NULL && fscanf(uph, "%s ", tempuph) == 1)
+                            {
+                                if (strcmp(tempuinfo, usinfo) == 0 && strcmp(tempuph, passengerPhoneNumber) == 0 && tempseat == busTicketNum)
+                                {
+                                    continue;
+                                }
+                                else
+                                {
+                                    fprintf(temp1, "%d ", tempseat);
+                                    fprintf(temp2, "%s\n", tempuinfo);
+                                    fprintf(temp3, "%s ", tempuph);
+                                }
+                            }
+                            fclose(bok);
+                            fclose(uin);
+                            fclose(uph);
+                            fclose(temp1);
+                            fclose(temp2);
+                            fclose(temp3);
+                            remove(boBus);
+                            remove(usrinfo);
+                            remove(usrph);
+                            rename(".files/temp1", boBus);
+                            rename(".files/temp2", usrinfo);
+                            rename(".files/temp3", usrph);
+                            FILE *append = fopen(unboBus, "a");
+                            fprintf(append, "%d ", busTicketNum);
+                            fclose(append);
+                            gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
+                            g_timeout_add(500, delayME, NULL);
+                        }
+                        else if (strcmp(urph, passengerPhoneNumber) != 0)
+                        {
+                            gtk_label_set_text(GTK_LABEL(message), "PHONE NUMBER DOES NOT MATCH!");
+                        }
                     }
                 }
             }

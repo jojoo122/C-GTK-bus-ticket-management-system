@@ -206,7 +206,6 @@ void list_ticket_system(GtkWidget *button)
             }
             else
             {
-                gtk_label_set_text(GTK_LABEL(message), "REDIRECTING");
                 listBus(lsid);
             }
             if (fptr != NULL)
@@ -298,88 +297,126 @@ void listBus(char llid[])
 
     sprintf(FullBusName, "%s- %s", bn, lid);
 
-    GtkWidget *busName = gtk_label_new(FullBusName);
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 20pt; }", -1, NULL);
-    GtkStyleContext *styleContext = gtk_widget_get_style_context(busName);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), busName, (width - 350) / 2, (height - 620) / 2);
+    char tempch[1000];
+    sprintf(tempch, ".files/Booked-%s", lid);
 
-    GtkWidget *passengerName = gtk_label_new("Passenger's Name:");
-    cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
-    styleContext = gtk_widget_get_style_context(passengerName);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), passengerName, (width - 1300) / 2, (height - 510) / 2);
-
-    GtkWidget *passengerPhNum = gtk_label_new("Passenger's Phone Number:");
-    cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
-    styleContext = gtk_widget_get_style_context(passengerPhNum);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), passengerPhNum, (width - 300) / 2, (height - 510) / 2);
-
-    GtkWidget *ticketNumber = gtk_label_new("Passenger's Seat Number:");
-    cssProvider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
-    styleContext = gtk_widget_get_style_context(ticketNumber);
-    gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-    gtk_fixed_put(GTK_FIXED(fixed), ticketNumber, (width + 760) / 2, (height - 510) / 2);
-
-    GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
-    gtk_widget_set_size_request(scrolled_window, width - 60, height - 300);
-    gtk_fixed_put(GTK_FIXED(fixed), scrolled_window, (width - 1300) / 2, (height - 420) / 2);
-
-    GtkWidget *main_grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(scrolled_window), main_grid);
-
-    GtkWidget *event_box1 = gtk_event_box_new();
-    GtkWidget *event_box2 = gtk_event_box_new();
-    GtkWidget *event_box3 = gtk_event_box_new();
-
-    gtk_widget_set_size_request(event_box1, 600, 100);
-    gtk_widget_set_size_request(event_box2, 580, 100);
-    gtk_widget_set_size_request(event_box3, 100, 100);
-
-    GtkWidget *grid1 = gtk_grid_new();
-    GtkWidget *grid2 = gtk_grid_new();
-    GtkWidget *grid3 = gtk_grid_new();
-
-    gtk_container_add(GTK_CONTAINER(event_box1), grid1);
-    gtk_container_add(GTK_CONTAINER(event_box2), grid2);
-    gtk_container_add(GTK_CONTAINER(event_box3), grid3);
-
-    gtk_grid_attach(GTK_GRID(main_grid), event_box1, 0, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), event_box2, 1, 0, 1, 1);
-    gtk_grid_attach(GTK_GRID(main_grid), event_box3, 2, 0, 1, 1);
-
-    for (int i = 0; i < 40; i++)
+    FILE *chk = fopen(tempch, "r");
+    if (fscanf(chk, "%d ", &seat) != 1)
     {
-        label = gtk_label_new("TEST NAME\n");
-        gtk_grid_attach(GTK_GRID(grid1), label, 0, 1 + i, 1, 1);
-
-        cssProvider = gtk_css_provider_new();
-        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
-        styleContext = gtk_widget_get_style_context(label);
+        GtkWidget *list1 = gtk_label_new("NO BOOKED TICKET FOUND!");
+        gtk_fixed_put(GTK_FIXED(fixed), list1, (width - 460) / 2, (height - 50) / 2);
+        GtkCssProvider *cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 26pt; }", -1, NULL);
+        GtkStyleContext *styleContext = gtk_widget_get_style_context(list1);
         gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-
-        label = gtk_label_new("1234567890\n");
-        gtk_grid_attach(GTK_GRID(grid2), label, 0, 1 + i, 1, 1);
-
-        cssProvider = gtk_css_provider_new();
-        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
-        styleContext = gtk_widget_get_style_context(label);
+        fclose(chk);
+    }
+    else
+    {
+        fclose(chk);
+        GtkWidget *busName = gtk_label_new(FullBusName);
+        GtkCssProvider *cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 20pt; }", -1, NULL);
+        GtkStyleContext *styleContext = gtk_widget_get_style_context(busName);
         gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_fixed_put(GTK_FIXED(fixed), busName, (width - 350) / 2, (height - 620) / 2);
 
-        char testchar[20];
-        sprintf(testchar, "%d\n", 1 + i);
-        label = gtk_label_new(testchar);
-        gtk_grid_attach(GTK_GRID(grid3), label, 0, 1 + i, 1, 1);
-
+        GtkWidget *passengerName = gtk_label_new("Passenger's Name:");
         cssProvider = gtk_css_provider_new();
-        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
-        styleContext = gtk_widget_get_style_context(label);
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
+        styleContext = gtk_widget_get_style_context(passengerName);
         gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_fixed_put(GTK_FIXED(fixed), passengerName, (width - 1300) / 2, (height - 510) / 2);
+
+        GtkWidget *passengerPhNum = gtk_label_new("Passenger's Phone Number:");
+        cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
+        styleContext = gtk_widget_get_style_context(passengerPhNum);
+        gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_fixed_put(GTK_FIXED(fixed), passengerPhNum, (width - 300) / 2, (height - 510) / 2);
+
+        GtkWidget *ticketNumber = gtk_label_new("Passenger's Seat Number:");
+        cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_data(cssProvider, "label { font-size: 16pt; }", -1, NULL);
+        styleContext = gtk_widget_get_style_context(ticketNumber);
+        gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+        gtk_fixed_put(GTK_FIXED(fixed), ticketNumber, (width + 760) / 2, (height - 510) / 2);
+
+        GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+        gtk_widget_set_size_request(scrolled_window, width - 60, height - 300);
+        gtk_fixed_put(GTK_FIXED(fixed), scrolled_window, (width - 1300) / 2, (height - 420) / 2);
+
+        GtkWidget *main_grid = gtk_grid_new();
+        gtk_container_add(GTK_CONTAINER(scrolled_window), main_grid);
+
+        GtkWidget *event_box1 = gtk_event_box_new();
+        GtkWidget *event_box2 = gtk_event_box_new();
+        GtkWidget *event_box3 = gtk_event_box_new();
+
+        gtk_widget_set_size_request(event_box1, 600, 100);
+        gtk_widget_set_size_request(event_box2, 580, 100);
+        gtk_widget_set_size_request(event_box3, 100, 100);
+
+        GtkWidget *grid1 = gtk_grid_new();
+        GtkWidget *grid2 = gtk_grid_new();
+        GtkWidget *grid3 = gtk_grid_new();
+
+        gtk_container_add(GTK_CONTAINER(event_box1), grid1);
+        gtk_container_add(GTK_CONTAINER(event_box2), grid2);
+        gtk_container_add(GTK_CONTAINER(event_box3), grid3);
+
+        gtk_grid_attach(GTK_GRID(main_grid), event_box1, 0, 0, 1, 1);
+        gtk_grid_attach(GTK_GRID(main_grid), event_box2, 1, 0, 1, 1);
+        gtk_grid_attach(GTK_GRID(main_grid), event_box3, 2, 0, 1, 1);
+
+        char userName[1000], userPhoneNumber[1000], SeatNumber[20];
+        char file1[1000], file2[1000], file3[1000];
+        int temp;
+        seat = 0;
+
+        sprintf(file1, ".files/UserInfo-%s", llid);
+        sprintf(file2, ".files/UserInfoPhone-%s", llid);
+        sprintf(file3, ".files/Booked-%s", llid);
+
+        FILE *userDetail_1, *userDetail_2, *seatnumber;
+        userDetail_1 = fopen(file1, "r");
+        userDetail_2 = fopen(file2, "r");
+        seatnumber = fopen(file3, "r");
+        int i = 0;
+
+        while (fscanf(seatnumber, "%d ", &seat) == 1 && fgets(userName, 1000, userDetail_1) != NULL && fscanf(userDetail_2, "%s ", userPhoneNumber) == 1)
+        {
+            label = gtk_label_new(userName);
+            gtk_grid_attach(GTK_GRID(grid1), label, 0, 1 + i, 1, 1);
+
+            cssProvider = gtk_css_provider_new();
+            gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
+            styleContext = gtk_widget_get_style_context(label);
+            gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            temp = strlen(userPhoneNumber);
+            userPhoneNumber[temp] = '\n';
+            label = gtk_label_new(userPhoneNumber);
+            gtk_grid_attach(GTK_GRID(grid2), label, 0, 1 + i, 1, 1);
+
+            cssProvider = gtk_css_provider_new();
+            gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
+            styleContext = gtk_widget_get_style_context(label);
+            gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+            sprintf(SeatNumber, "%d\n", seat);
+            label = gtk_label_new(SeatNumber);
+            gtk_grid_attach(GTK_GRID(grid3), label, 0, 1 + i, 1, 1);
+
+            cssProvider = gtk_css_provider_new();
+            gtk_css_provider_load_from_data(cssProvider, "label { font-size: 12pt; }", -1, NULL);
+            styleContext = gtk_widget_get_style_context(label);
+            gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+            i++;
+        }
+        fclose(userDetail_1);
+        fclose(userDetail_2);
+        fclose(seatnumber);
     }
 
     gtk_widget_show_all(window);
