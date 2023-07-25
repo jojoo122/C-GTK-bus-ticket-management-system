@@ -22,6 +22,10 @@ int main(int argc, char **argv)
     gtk_init(&argc, &argv);
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_fullscreen(GTK_WINDOW(window));
+
+    GdkPixbuf *icon_pixbuf = gdk_pixbuf_new_from_file("include/logo.ico", NULL);
+    gtk_window_set_icon(GTK_WINDOW(window), icon_pixbuf);
+
     gtk_widget_show_all(window);
     g_object_set(gtk_settings_get_default(), "gtk-application-prefer-dark-theme", TRUE, NULL);
     if (osname == 3 || osname == 1)
