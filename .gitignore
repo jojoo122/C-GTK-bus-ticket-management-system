@@ -1,7 +1,0 @@
-test.c
-Makefile
-main
-.files
-.vscode
-temp.c
-.gitignore
