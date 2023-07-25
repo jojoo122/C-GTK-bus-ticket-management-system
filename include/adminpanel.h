@@ -1,3 +1,4 @@
+void resetApp();
 void adminpannel()
 {
     iden = 1;
@@ -43,17 +44,30 @@ void adminpannel()
     GtkWidget *listusers = gtk_button_new_with_label("LIST ALL THE USERS");
     gtk_widget_set_size_request(listusers, 400, 50);
     g_signal_connect(listusers, "clicked", G_CALLBACK(listUsers), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),listusers,(width-400)/2+250,(height/2)-100);
+    gtk_fixed_put(GTK_FIXED(fixed),listusers,(width-400)/2+250,(height/2) - 300);
 
     GtkWidget *bookedticketdetails = gtk_button_new_with_label("LIST BOOKED TICKET DETAILS");
     gtk_widget_set_size_request(bookedticketdetails, 400, 50);
     g_signal_connect(bookedticketdetails, "clicked", G_CALLBACK(listDetail), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),bookedticketdetails,(width-400)/2+250,(height/2));
+    gtk_fixed_put(GTK_FIXED(fixed),bookedticketdetails,(width-400)/2+250,(height/2) - 200);
 
     GtkWidget *resetapp = gtk_button_new_with_label("RESET APP");
-    gtk_widget_set_size_request(resetapp, 50, 50);
-    g_signal_connect(resetapp, "clicked", G_CALLBACK(resetapp), NULL);
-    gtk_fixed_put(GTK_FIXED(fixed),resetapp,1300, height - 45);
+    gtk_widget_set_size_request(resetapp, 40, 40);
+    g_signal_connect(resetapp, "clicked", G_CALLBACK(resetApp), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed), resetapp, 1255, height - 47);
     
     gtk_widget_show_all(window);
+}
+
+void resetApp()
+{
+    if(osname == 1)
+    {
+        system("rmdir .files");
+    }
+    else if(osname == 3)
+    {
+        system("rm -r .files");
+    }
+    firstlanding();
 }
