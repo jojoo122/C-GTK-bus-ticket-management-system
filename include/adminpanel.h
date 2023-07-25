@@ -56,6 +56,7 @@ void adminpannel()
     g_signal_connect(resetapp, "clicked", G_CALLBACK(resetApp), NULL);
     gtk_fixed_put(GTK_FIXED(fixed), resetapp, 1255, height - 47);
     
+    
     gtk_widget_show_all(window);
 }
 
