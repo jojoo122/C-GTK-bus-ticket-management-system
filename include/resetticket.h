@@ -355,6 +355,8 @@ void reset_bus_ticket_manual(GtkWidget *button)
                 fprintf(resetTime, "%d %d %d %d %d", user_entered_year, user_entered_month, user_entered_day, hour, minutes);
                 fclose(resetTime);
                 gtk_label_set_text(GTK_LABEL(message), "SUCCESS");
+                g_timeout_add(500, addDelay, NULL);
+
             }
             if (fptr != NULL)
             {
@@ -396,6 +398,7 @@ void reset_bus_ticket_manual(GtkWidget *button)
                 fprintf(resetTime, "%d %d %d %d %d", user_entered_year, user_entered_month, user_entered_day, hour, minutes);
                 fclose(resetTime);
                 gtk_label_set_text(GTK_LABEL(message), "SUCCESS");
+                g_timeout_add(500, addDelay, NULL);
             }
             else
             {
