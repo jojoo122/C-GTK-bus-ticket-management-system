@@ -32,7 +32,7 @@ void firstlanding()
 
     showHF();
 
-    GtkWidget *request1 = gtk_label_new("LOOKS LIKE THIS IS THE FIRST TIME YOU ARE USING THIS APP \n     PLEASE SETUP AN ADMIN ACCOUNT FOR FURTHER USE");
+    GtkWidget *request1 = gtk_label_new("PLEASE SETUP AN ADMIN ACCOUNT FOR FURTHER USE");
     GtkCssProvider *cssProvider1 = gtk_css_provider_new();
     gtk_css_provider_load_from_data(cssProvider1, "label { font-size: 20pt; }", -1, NULL);
     GtkStyleContext *styleContext1 = gtk_widget_get_style_context(request1);
