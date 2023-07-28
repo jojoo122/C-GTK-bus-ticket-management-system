@@ -155,3 +155,120 @@ int addDelayUser(gpointer data)
     adminpannel();
     return 0;
 }
+
+gboolean validate_entry_input_month(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    const gchar *current_text = gtk_entry_get_text(entry);
+    
+    gchar *proposed_text = g_strndup(current_text, *position);
+    proposed_text = g_strconcat(proposed_text, new_text, NULL);
+    gchar *remaining_text = g_strconcat(proposed_text, current_text + *position, NULL);
+
+    gchar *end_ptr;
+    glong number = g_ascii_strtoll(proposed_text, &end_ptr, 10);
+
+    gboolean valid_input = (end_ptr == proposed_text + strlen(proposed_text));
+
+    valid_input = valid_input && (number >= 1 && number <= 12);
+
+    g_free(proposed_text);
+    g_free(remaining_text);
+
+    return !valid_input;
+}
+
+void entry_insert_text_month(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    if (validate_entry_input_month(entry, new_text, new_text_length, position, user_data))
+    {
+        g_signal_stop_emission_by_name(entry, "insert-text");
+    }
+}
+
+gboolean validate_entry_input_days(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    const gchar *current_text = gtk_entry_get_text(entry);
+    
+    gchar *proposed_text = g_strndup(current_text, *position);
+    proposed_text = g_strconcat(proposed_text, new_text, NULL);
+    gchar *remaining_text = g_strconcat(proposed_text, current_text + *position, NULL);
+
+    gchar *end_ptr;
+    glong number = g_ascii_strtoll(proposed_text, &end_ptr, 10);
+
+    gboolean valid_input = (end_ptr == proposed_text + strlen(proposed_text));
+
+    valid_input = valid_input && (number >= 1 && number <= 32);
+
+    g_free(proposed_text);
+    g_free(remaining_text);
+
+    return !valid_input;
+}
+
+void entry_insert_text_days(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    if (validate_entry_input_days(entry, new_text, new_text_length, position, user_data))
+    {
+        g_signal_stop_emission_by_name(entry, "insert-text");
+    }
+}
+
+gboolean validate_entry_input_hour(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    const gchar *current_text = gtk_entry_get_text(entry);
+    
+    gchar *proposed_text = g_strndup(current_text, *position);
+    proposed_text = g_strconcat(proposed_text, new_text, NULL);
+    gchar *remaining_text = g_strconcat(proposed_text, current_text + *position, NULL);
+
+    gchar *end_ptr;
+    glong number = g_ascii_strtoll(proposed_text, &end_ptr, 10);
+
+    gboolean valid_input = (end_ptr == proposed_text + strlen(proposed_text));
+
+    valid_input = valid_input && (number >= 0 && number <= 24);
+
+    g_free(proposed_text);
+    g_free(remaining_text);
+
+    return !valid_input;
+}
+
+void entry_insert_text_hour(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    if (validate_entry_input_hour(entry, new_text, new_text_length, position, user_data))
+    {
+        g_signal_stop_emission_by_name(entry, "insert-text");
+    }
+}
+
+
+gboolean validate_entry_input_min(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    const gchar *current_text = gtk_entry_get_text(entry);
+    
+    gchar *proposed_text = g_strndup(current_text, *position);
+    proposed_text = g_strconcat(proposed_text, new_text, NULL);
+    gchar *remaining_text = g_strconcat(proposed_text, current_text + *position, NULL);
+
+    gchar *end_ptr;
+    glong number = g_ascii_strtoll(proposed_text, &end_ptr, 10);
+
+    gboolean valid_input = (end_ptr == proposed_text + strlen(proposed_text));
+
+    valid_input = valid_input && (number >= 0 && number <= 59);
+
+    g_free(proposed_text);
+    g_free(remaining_text);
+
+    return !valid_input;
+}
+
+void entry_insert_text_min(GtkEntry *entry, gchar *new_text, gint new_text_length, gint *position, gpointer user_data)
+{
+    if (validate_entry_input_min(entry, new_text, new_text_length, position, user_data))
+    {
+        g_signal_stop_emission_by_name(entry, "insert-text");
+    }
+}

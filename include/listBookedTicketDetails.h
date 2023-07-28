@@ -369,9 +369,9 @@ void listBus(char llid[])
         gtk_grid_attach(GTK_GRID(main_grid), event_box2, 1, 0, 1, 1);
         gtk_grid_attach(GTK_GRID(main_grid), event_box3, 2, 0, 1, 1);
 
-        char userName[1000], userPhoneNumber[1000], SeatNumber[20];
+        char userName[1000], userPhoneNumber[12], SeatNumber[20];
         char file1[1000], file2[1000], file3[1000];
-        int temp;
+        int temp = 0;
         seat = 0;
 
         sprintf(file1, ".files/UserInfo-%s", llid);
@@ -394,8 +394,7 @@ void listBus(char llid[])
             styleContext = gtk_widget_get_style_context(label);
             gtk_style_context_add_provider(styleContext, GTK_STYLE_PROVIDER(cssProvider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-            temp = strlen(userPhoneNumber);
-            userPhoneNumber[temp] = '\n';
+            userPhoneNumber[10] = '\n';
             label = gtk_label_new(userPhoneNumber);
             gtk_grid_attach(GTK_GRID(grid2), label, 0, 1 + i, 1, 1);
 
