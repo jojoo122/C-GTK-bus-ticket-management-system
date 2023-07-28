@@ -51,6 +51,11 @@ void adminpannel()
     g_signal_connect(bookedticketdetails, "clicked", G_CALLBACK(listDetail), NULL);
     gtk_fixed_put(GTK_FIXED(fixed),bookedticketdetails,(width-400)/2+250,(height/2) - 200);
 
+    GtkWidget *bookedticketdetails = gtk_button_new_with_label("SET TICKET RESET TIME");
+    gtk_widget_set_size_request(bookedticketdetails, 400, 50);
+    g_signal_connect(bookedticketdetails, "clicked", G_CALLBACK(reset_bus_list), NULL);
+    gtk_fixed_put(GTK_FIXED(fixed),bookedticketdetails,(width-400)/2+250,(height/2) - 200);
+
     GtkWidget *resetapp = gtk_button_new_with_label("RESET APP");
     gtk_widget_set_size_request(resetapp, 40, 40);
     g_signal_connect(resetapp, "clicked", G_CALLBACK(resetApp), NULL);

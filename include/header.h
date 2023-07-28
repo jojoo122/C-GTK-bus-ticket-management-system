@@ -41,6 +41,8 @@ void listDetail();
 
 void resetbus(char *);
 
+void reset_bus_list();
+
 int width = 1366, height = 768;
 
 char entered_username[20], entered_password[20];

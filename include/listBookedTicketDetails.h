@@ -129,7 +129,7 @@ void listDetail()
         gtk_widget_set_size_request(busid, 270, 50);
         gtk_fixed_put(GTK_FIXED(fixed), busid, (width - 270) / 2, (height - 50) / 2 - 30);
 
-        GtkWidget *book = gtk_button_new_with_label("GO TO BOOKING PORTAL");
+        GtkWidget *book = gtk_button_new_with_label("LIST DETAILS");
         gtk_widget_set_size_request(book, 200, 50);
         gtk_fixed_put(GTK_FIXED(fixed), book, (width - 200) / 2, (height - 50) / 2 + 30);
         g_object_set_data(G_OBJECT(book), "busid", busid);
