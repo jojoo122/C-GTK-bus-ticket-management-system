@@ -167,7 +167,7 @@ void reset_bus_list()
         gtk_entry_set_max_length(GTK_ENTRY(time_hour), 2);
         g_signal_connect(time_hour, "insert-text", G_CALLBACK(entry_insert_text_hour), NULL);
         gtk_fixed_put(GTK_FIXED(fixed), time_hour, (width - 310) / 2, (height - 50) / 2 - 10);
-        
+
         GtkWidget *time_min = gtk_entry_new();
         gtk_entry_set_placeholder_text(GTK_ENTRY(time_min), "MINUTES");
         gtk_widget_set_size_request(time_min, 100, 50);
@@ -235,7 +235,7 @@ void reset_bus_ticket_manual(GtkWidget *button)
             break;
         }
     }
-    if (strcmp(busId, "") == 0 && strcmp(year, "") == 0 && strcmp(month, "") == 0 && strcmp(day, "") == 0 && strcmp(time_hour,"") == 0 && strcmp(time_minutes,"") == 0)
+    if (strcmp(busId, "") == 0 && strcmp(year, "") == 0 && strcmp(month, "") == 0 && strcmp(day, "") == 0 && strcmp(time_hour, "") == 0 && strcmp(time_minutes, "") == 0)
     {
         gtk_label_set_text(GTK_LABEL(message), "PLEASE ENTER ALL THE REQUIRED INFORMATIONS");
     }
@@ -247,7 +247,7 @@ void reset_bus_ticket_manual(GtkWidget *button)
     {
         gtk_label_set_text(GTK_LABEL(message), "PLEASE ENTER THE DATE");
     }
-    else if(strcmp(time_hour,"") == 0 || strcmp(time_minutes,"") == 0)
+    else if (strcmp(time_hour, "") == 0 || strcmp(time_minutes, "") == 0)
     {
         gtk_label_set_text(GTK_LABEL(message), "PLEASE ENTER THE TIME");
     }
@@ -257,42 +257,59 @@ void reset_bus_ticket_manual(GtkWidget *button)
     }
     else if ((user_entered_year - current_year) < 0)
     {
-        gtk_label_set_text(GTK_LABEL(message), "INVALID YEAR");
+        gtk_label_set_text(GTK_LABEL(message), "INVALID DATE");
     }
     else if (user_entered_year == current_year)
     {
-        if((user_entered_month - current_month) < 0)
+        if ((user_entered_month - current_month) < 0)
         {
-            gtk_label_set_text(GTK_LABEL(message), "INVALID MONTH");
+            gtk_label_set_text(GTK_LABEL(message), "INVALID DATE");
         }
-    }
-    else if(user_entered_year == current_year && user_entered_month == current_month)
-    {
-        if((user_entered_day - current_day) < 0)
+        else if (user_entered_month == current_month)
         {
-            gtk_label_set_text(GTK_LABEL(message), "INVALID DAY");
-        }
-    }
-    else if(user_entered_year == current_year && user_entered_month == current_month && user_entered_day == current_day)
-    {
-        if((hour - current_hour) < 0)
-        {
-            gtk_label_set_text(GTK_LABEL(message), "INVALID HOUR");
-        }
-        else if(hour == current_hour)
-        {
-            if((minutes - current_minute) < 0)
+            if ((user_entered_day - current_day) < 0)
             {
-                gtk_label_set_text(GTK_LABEL(message), "INVALID MINUTES");
+                gtk_label_set_text(GTK_LABEL(message), "INVALID DATE");
+            }
+            else if (user_entered_day == current_day)
+            {
+                if ((hour - current_hour) < 0)
+                {
+                    gtk_label_set_text(GTK_LABEL(message), "INVALID TIME");
+                }
+                else if (hour == current_hour)
+                {
+                    if ((minutes - current_minute) < 0)
+                    {
+                        gtk_label_set_text(GTK_LABEL(message), "INVALID TIME");
+                    }
+                    else if (minutes == current_minute)
+                    {
+                        gtk_label_set_text(GTK_LABEL(message), "INVALID TIME");
+                    }
+                    else
+                    {
+                        goto label;
+                    }
+                }
+                else
+                {
+                    goto label;
+                }
+            }
+            else
+            {
+                goto label;
             }
         }
-        else if(hour == current_hour && minutes == current_minute)
+        else
         {
-            gtk_label_set_text(GTK_LABEL(message), "INVALID TIME");
+            goto label;
         }
     }
     else
     {
+    label:
         count = 0;
         for (int i = 0; i < lenbid; i++)
         {
@@ -333,11 +350,11 @@ void reset_bus_ticket_manual(GtkWidget *button)
             else
             {
                 char resetfile[1000];
-                sprintf(resetfile,".files/ResetTime-%s",lsid);
-                FILE *resetTime = fopen(resetfile,"w");
-                fprintf(resetTime,"%d %d %d %d %d",user_entered_year,user_entered_month,user_entered_day,hour,minutes);
+                sprintf(resetfile, ".files/ResetTime-%s", lsid);
+                FILE *resetTime = fopen(resetfile, "w");
+                fprintf(resetTime, "%d %d %d %d %d", user_entered_year, user_entered_month, user_entered_day, hour, minutes);
                 fclose(resetTime);
-                gtk_label_set_text(GTK_LABEL(message),"SUCCESS");
+                gtk_label_set_text(GTK_LABEL(message), "SUCCESS");
             }
             if (fptr != NULL)
             {
@@ -374,11 +391,11 @@ void reset_bus_ticket_manual(GtkWidget *button)
             if (strcmp(lsId, busid) == 0)
             {
                 char resetfile[1000];
-                sprintf(resetfile,".files/ResetTime-%s",lsid);
-                FILE *resetTime = fopen(resetfile,"w");
-                fprintf(resetTime,"%d %d %d %d %d",user_entered_year,user_entered_month,user_entered_day,hour,minutes);
+                sprintf(resetfile, ".files/ResetTime-%s", lsid);
+                FILE *resetTime = fopen(resetfile, "w");
+                fprintf(resetTime, "%d %d %d %d %d", user_entered_year, user_entered_month, user_entered_day, hour, minutes);
                 fclose(resetTime);
-                gtk_label_set_text(GTK_LABEL(message),"SUCCESS");
+                gtk_label_set_text(GTK_LABEL(message), "SUCCESS");
             }
             else
             {
