@@ -69,7 +69,7 @@ void resetApp()
 {
     if(osname == 1)
     {
-        system("rmdir /s .files");
+        system("rd /s /q .files");
     }
     else if(osname == 3)
     {
