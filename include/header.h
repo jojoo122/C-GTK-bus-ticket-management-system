@@ -3,6 +3,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <time.h>
 
 int iden;
 
@@ -37,6 +38,8 @@ void removeBus();
 void cancelTicket();
 
 void listDetail();
+
+void resetbus(char *);
 
 int width = 1366, height = 768;
 

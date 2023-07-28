@@ -281,6 +281,7 @@ int delay(gpointer data)
 void listBUSTicket(int seat, char lcid[])
 {
     clearmywindow();
+    resetbus(lcid);
     strcpy(lid, lcid);
 
     fixed = gtk_fixed_new();

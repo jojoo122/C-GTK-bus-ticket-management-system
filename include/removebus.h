@@ -253,7 +253,8 @@ void remove_bus_system(GtkWidget *button)
 void remove_bus(char lesid[])
 {
     char busNm[500], lsid[200];
-    char boBus[1000], unboBus[1000], usrin[1000], usrph[1000];
+    char boBus[1000], unboBus[1000], usrin[1000], usrph[1000],retime[1000];
+    sprintf(retime,".files/ResetTime-%s",lesid);
     sprintf(boBus, ".files/Booked-%s", lesid);
     sprintf(unboBus, ".files/UnBooked-%s", lesid);
     sprintf(usrin, ".files/UserInfo-%s", lesid);
@@ -281,6 +282,7 @@ void remove_bus(char lesid[])
     remove(boBus);
     remove(unboBus);
     remove(usrin);
+    remove(retime);
 
     remove(".files/buslist");
     remove(".files/BusSeatLicense");

@@ -12,6 +12,7 @@
 #include "include/listusers.h"
 #include "include/landing.h"
 #include "include/removebus.h"
+#include "include/resetticket.h"
 #include "include/bookticket.h"
 #include "include/registerbus.h"
 #include "include/cancelticket.h"
