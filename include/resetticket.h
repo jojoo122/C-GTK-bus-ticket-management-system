@@ -207,6 +207,11 @@ void reset_bus_ticket_manual(GtkWidget *button)
     struct tm *localTime = localtime(&currentTime);
 
     int current_year = localTime->tm_year + 1900;
+    int current_month = localTime->tm_mon + 1;
+    int current_day = localTime->tm_mday;
+    int current_hour = localTime->tm_hour;
+    int current_minute = localTime->tm_min;
+    int current_second = localTime->tm_sec;
 
     const gchar *busId = gtk_entry_get_text(GTK_ENTRY(bus_id));
     const gchar *year = gtk_entry_get_text(GTK_ENTRY(year_widget));
@@ -253,6 +258,38 @@ void reset_bus_ticket_manual(GtkWidget *button)
     else if ((user_entered_year - current_year) < 0)
     {
         gtk_label_set_text(GTK_LABEL(message), "INVALID YEAR");
+    }
+    else if (user_entered_year == current_year)
+    {
+        if((user_entered_month - current_month) < 0)
+        {
+            gtk_label_set_text(GTK_LABEL(message), "INVALID MONTH");
+        }
+    }
+    else if(user_entered_year == current_year && user_entered_month == current_month)
+    {
+        if((user_entered_day - current_day) < 0)
+        {
+            gtk_label_set_text(GTK_LABEL(message), "INVALID DAY");
+        }
+    }
+    else if(user_entered_year == current_year && user_entered_month == current_month && user_entered_day == current_day)
+    {
+        if((hour - current_hour) < 0)
+        {
+            gtk_label_set_text(GTK_LABEL(message), "INVALID HOUR");
+        }
+        else if(hour == current_hour)
+        {
+            if((minutes - current_minute) < 0)
+            {
+                gtk_label_set_text(GTK_LABEL(message), "INVALID MINUTES");
+            }
+        }
+        else if(hour == current_hour && minutes == current_minute)
+        {
+            gtk_label_set_text(GTK_LABEL(message), "INVALID TIME");
+        }
     }
     else
     {
