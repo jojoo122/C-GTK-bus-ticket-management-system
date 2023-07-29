@@ -68,6 +68,8 @@ void resetApp()
 {
     if (osname == 1)
     {
+        remove(".files/adminlist");
+        remove(".files/userlist");
         system("rmdir /s /q .files");
     }
     else if (osname == 3)
