@@ -57,7 +57,7 @@ int registeradmin()
             system("attrib +h .files");
         }
         FILE *fp;
-        fp = fopen(".files/adminlist", "a");
+        fp = fopen(".files/adminlist", "w");
         if (fopen(".files/adminlist", "r") == NULL)
         {
             return 0;
@@ -72,7 +72,7 @@ int registeradmin()
             system("mkdir .files");
         }
         FILE *fp;
-        fp = fopen(".files/adminlist", "a");
+        fp = fopen(".files/adminlist", "w");
         if (fopen(".files/adminlist", "r") == NULL)
         {
             return 0;
