@@ -892,7 +892,7 @@ void CancelNumberTicket(GtkWidget *button, gpointer data)
                         fp9 = fopen(boBus, "r");
                         while (fgets(usinfo, 1000, fp7) != NULL && fscanf(fp8, "%s ", urph) == 1 && fscanf(fp9, "%d ", &seatNum) == 1)
                         {
-                            if (strcmp(urph, passengerPhoneNumber) == 0)
+                            if (strcmp(urph, passengerPhoneNumber) == 0 && seatNum == busTicketNum)
                             {
                                 break;
                             }
@@ -900,7 +900,7 @@ void CancelNumberTicket(GtkWidget *button, gpointer data)
                         fclose(fp7);
                         fclose(fp8);
                         fclose(fp9);
-                        if (strcmp(urph, passengerPhoneNumber) == 0)
+                        if (strcmp(urph, passengerPhoneNumber) == 0 && seatNum == busTicketNum)
                         {
                             int tempseat;
                             char tempuinfo[1000], tempuph[1000];
@@ -942,7 +942,7 @@ void CancelNumberTicket(GtkWidget *button, gpointer data)
                             gtk_label_set_text(GTK_LABEL(message), "SUCCESS!");
                             g_timeout_add(500, delayME, NULL);
                         }
-                        else if (strcmp(urph, passengerPhoneNumber) != 0)
+                        else if (strcmp(urph, passengerPhoneNumber) != 0 || seatNum != busTicketNum)
                         {
                             gtk_label_set_text(GTK_LABEL(message), "PHONE NUMBER DOES NOT MATCH!");
                         }
